@@ -1,17 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0ea5e9;
+  --color-secondary: #2dd4bf;
+  --color-dark: #020617;
+  --color-accent: #f0f9ff;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2.5rem;
+}
 
 :root {
   --primary: #0ea5e9;
   --secondary: #2dd4bf;
-  --dark: #0f172a;
+  --dark: #020617;
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  cursor: default;
+}
+
+a,
+button {
+  cursor: pointer;
 }
 
 html,
@@ -19,38 +38,96 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   scroll-behavior: smooth;
-}
-
-body {
   background-color: var(--dark);
   color: white;
-  font-family: 'Inter', sans-serif;
 }
 
+/* Custom Utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glow-cyan {
-  box-shadow: 0 0 40px rgba(45, 212, 191, 0.2);
+.glass-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-color: rgba(14, 165, 233, 0.4);
+  transform: translateY(-5px);
 }
 
+.text-gradient {
+  background: linear-gradient(to right, #2dd4bf, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-mesh {
+  background-image:
+    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(45, 212, 191, 0.15) 0, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.1) 0, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(45, 212, 191, 0.1) 0, transparent 50%);
+}
+
+/* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(1deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-20px) rotate(1deg);
+  }
 }
 
-.floating {
-  animation: float 8s ease-in-out infinite;
+.animate-float {
+  animation: float 10s ease-in-out infinite;
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    filter: blur(40px);
+  }
+
+  50% {
+    opacity: 0.8;
+    filter: blur(60px);
+  }
 }
 
-.animate-reveal {
-  animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.glow-orb {
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+/* Bento Grid Helper */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 240px;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
 }
