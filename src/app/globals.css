@@ -3,21 +3,21 @@
 @theme {
   --color-primary: #0ea5e9;
   --color-secondary: #2dd4bf;
-  --color-dark: #020617;
+  --color-dark: #0B0F1A;
   --color-accent: #f0f9ff;
 
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2.5rem;
+  --radius-xl: 12px;
+  --radius-2xl: 18px;
+  --radius-3xl: 24px;
 }
 
 :root {
   --primary: #0ea5e9;
   --secondary: #2dd4bf;
-  --dark: #020617;
+  --dark: #0B0F1A;
   --glass: rgba(255, 255, 255, 0.02);
   --glass-border: rgba(255, 255, 255, 0.08);
 }
@@ -46,7 +46,7 @@ body {
 
 /* Antimetal Style Gradients */
 .bg-antimetal {
-  background: radial-gradient(circle at 50% -20%, #0c4a6e 0%, #020617 80%);
+  background: radial-gradient(circle at 50% -20%, #0c4a6e 0%, #0B0F1A 80%);
 }
 
 .bg-mesh-v2 {
@@ -67,7 +67,7 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.03;
+  opacity: 0.02;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   z-index: 1;
@@ -83,28 +83,59 @@ body {
 .text-hero {
   font-weight: 900;
   letter-spacing: -0.04em;
-  line-height: 0.85;
+  line-height: 0.9;
 }
 
 /* Glass 2.0 */
 .glass-v2 {
   background: rgba(255, 255, 255, 0.01);
   backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
 .glass-card-v2 {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-v2:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(14, 165, 233, 0.3);
-  box-shadow: 0 0 40px rgba(14, 165, 233, 0.1);
-  transform: translateY(-8px) scale(1.01);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px);
+}
+
+/* Shimmer Border Effect */
+.shimmer-border {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shimmer-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
 
 /* Border Glow */
@@ -116,7 +147,7 @@ body {
   content: "";
   position: absolute;
   inset: -1px;
-  background: linear-gradient(to right, transparent, rgba(14, 165, 233, 0.5), transparent);
+  background: linear-gradient(45deg, transparent 40%, rgba(14, 165, 233, 0.3), transparent 60%);
   z-index: -1;
   border-radius: inherit;
   opacity: 0;
@@ -131,7 +162,7 @@ body {
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(20px);
   }
 
   to {
@@ -142,7 +173,7 @@ body {
 
 .animate-reveal-up {
   opacity: 0;
-  animation: reveal-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes line-draw {
@@ -156,5 +187,13 @@ body {
 }
 
 .animate-line {
-  animation: line-draw 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  animation: line-draw 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Custom Gradients */
+.text-gradient {
+  background: linear-gradient(to right, #ffffff, #0ea5e9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

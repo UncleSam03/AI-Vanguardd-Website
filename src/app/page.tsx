@@ -1,238 +1,287 @@
-import Image from "next/image";
+"use client";
+
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Zap,
+  Shield,
+  Bot,
+  Layout,
+  ArrowRight,
+  Droplet,
+  Zap as Power,
+  Trees as Landscaping,
+  Thermometer,
+  Cpu,
+  Globe,
+  Clock
+} from "lucide-react";
+
+const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-antimetal bg-grain selection:bg-cyan-500/30">
+    <main className="relative min-h-screen bg-antimetal bg-grain selection:bg-primary/30">
       {/* Dynamic Background Elements */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-cyan-500/10 blur-[140px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-sky-500/5 blur-[120px]" />
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/10 blur-[140px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[120px]" />
         <div className="absolute inset-0 bg-mesh-v2 opacity-50" />
       </div>
 
-      {/* Technical Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-10 py-8 flex justify-between items-center transition-all duration-500">
-        <div className="flex items-center gap-6 group">
-          <div className="relative w-10 h-10 rounded-full glass-v2 flex items-center justify-center p-2 border-cyan-500/20 group-hover:border-cyan-500/50 transition-all duration-700">
-            <Image
-              src="/logo.jpg"
-              alt="AI Vanguard"
-              width={24}
-              height={24}
-              className="rounded-sm grayscale brightness-150"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[14px] font-black tracking-[0.3em] text-white">AI VANGUARD</span>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="text-[8px] text-mono text-cyan-400/60 font-medium tracking-[0.4em]">SYSTEM.READY</span>
+      {/* Minimalism Sticky Navigation */}
+      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-center">
+        <div className="glass-v2 px-6 py-3 rounded-full flex items-center gap-8 border-white/10 backdrop-blur-xl">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-primary rounded-sm flex items-center justify-center">
+              <span className="text-[10px] font-black text-dark">AV</span>
             </div>
-          </div>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-16 glass-v2 px-10 py-3 rounded-full border-white/5">
-          {["solutions", "pricing", "autonomous"].map((item) => (
-            <a
-              key={item}
-              href={`#${item}`}
-              className="text-[9px] text-mono text-slate-400 hover:text-white transition-all duration-300 relative group overflow-hidden"
-            >
-              {item}
-              <span className="absolute bottom-0 left-0 w-full h-[1px] bg-cyan-400 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500" />
-            </a>
-          ))}
-        </div>
-
-        <button className="relative group">
-          <div className="absolute inset-0 bg-cyan-400 blur-lg opacity-0 group-hover:opacity-20 transition-all" />
-          <div className="relative glass-v2 px-8 py-3 rounded-xl border-cyan-500/30 group-hover:border-cyan-500 transition-all">
-            <span className="text-[10px] text-mono text-white font-black tracking-widest">DEPLOY.NOW</span>
-          </div>
-        </button>
-      </nav>
-
-      {/* Technical Hero Section */}
-      <header className="relative z-10 pt-48 pb-32 px-10 max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-20 items-center">
-        <div className="text-left animate-reveal-up">
-          <div className="flex items-center gap-4 mb-10 overflow-hidden">
-            <span className="text-[10px] text-mono text-cyan-400 font-bold whitespace-nowrap">01 // AUTOMATE.EVERYTHING</span>
-            <div className="h-[1px] bg-gradient-to-r from-cyan-500/50 to-transparent w-full animate-line" />
+            <span className="text-[12px] font-black tracking-widest text-white uppercase">AI Vanguard</span>
           </div>
 
-          <h1 className="text-hero text-[70px] md:text-[110px] text-white mb-10">
-            ELITE <br />
-            <span className="text-gradient">AUTONOMY.</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-slate-400 max-w-xl mb-14 font-light leading-relaxed tracking-tight border-l-2 border-cyan-500/20 pl-8 ml-2">
-            AI Vanguard builds sovereign digital infrastructure for the manual trades. High-conversion landing pages meets autonomous customer closed-loop systems.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-8 items-start">
-            <button className="bg-white text-slate-950 px-12 py-6 rounded-2xl font-black text-xs text-mono hover:bg-cyan-400 transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(255,255,255,0.1)]">
-              INITIALIZE_PROJECT
-            </button>
-            <div className="flex flex-col gap-2 opacity-50 pl-2">
-              <span className="text-[9px] text-mono font-bold tracking-[0.2em] text-white">LATENCY: 12ms</span>
-              <span className="text-[9px] text-mono font-bold tracking-[0.2em] text-white">REGION: EU_ME</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative flex justify-center items-center py-20 animate-reveal-up" style={{ animationDelay: '0.2s' }}>
-          {/* Abstract 3D Central Asset */}
-          <div className="relative w-full aspect-square max-w-[500px] group">
-            <div className="absolute inset-0 bg-cyan-400/10 rounded-full blur-[100px] group-hover:bg-cyan-400/20 transition-all duration-1000" />
-            <Image
-              src="/orb.png"
-              alt="Automation Intelligence"
-              fill
-              className="object-contain drop-shadow-[0_0_80px_rgba(14,165,233,0.3)] group-hover:scale-110 transition-transform duration-[4000ms] animate-float"
-              priority
-            />
-            {/* Technical Labels around the orb */}
-            <div className="absolute top-[10%] right-[-10%] glass-v2 p-4 rounded-xl border-white/5 opacity-60 backdrop-blur-xl group-hover:opacity-100 transition-all">
-              <span className="text-[8px] text-mono text-cyan-400 font-black block mb-1">DATA_STREAM</span>
-              <div className="flex gap-1">
-                {[1, 0, 1, 1, 0].map((b, i) => <span key={i} className={`w-1 h-3 rounded-full ${b ? 'bg-cyan-400' : 'bg-white/10'}`} />)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Antimetal-style Grid Section */}
-      <section id="solutions" className="relative z-10 py-48 px-10 max-w-[1440px] mx-auto border-t border-white/5">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-32">
-          <div className="max-w-2xl">
-            <span className="text-[10px] text-mono text-cyan-500 font-bold mb-6 block">02 // ARCHITECTURE</span>
-            <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">COMMAND YOUR <br /> INDUSTRY.</h2>
-          </div>
-          <p className="text-slate-400 font-mono text-[9px] tracking-widest max-w-xs text-right opacity-40">
-            [SCALING_INFRASTRUCTURE_FOR_PLUMBERS_ELECTRICIANS_AND_CONSTRUCTORS]
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-12 gap-6">
-          {/* Featured Bento Card */}
-          <div className="md:col-span-8 glass-card-v2 rounded-[2.5rem] p-16 flex flex-col justify-between min-h-[500px] group relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-30 transition-opacity">
-              <span className="text-[120px] font-black italic select-none">AI</span>
-            </div>
-            <div className="relative z-10">
-              <div className="w-14 h-14 glass-v2 rounded-2xl flex items-center justify-center mb-10 border-white/10 text-2xl">🤖</div>
-              <h3 className="text-4xl font-black text-white mb-6 uppercase tracking-tight">Autonomous Support Logic</h3>
-              <p className="text-xl text-slate-400 font-light max-w-md leading-relaxed">
-                Deeply trained AI agents that handle bookings, qualification, and initial support specialized for trade terminology.
-              </p>
-            </div>
-            <div className="pt-10 border-t border-white/5 flex gap-4">
-              <span className="px-5 py-2 glass-v2 rounded-full text-[9px] text-mono text-white italic">QUALIFICATION_MODE: ACTIVE</span>
-              <span className="px-5 py-2 glass-v2 rounded-full text-[9px] text-mono text-white italic">LLM_CORE: VANGUARD_X</span>
-            </div>
-          </div>
-
-          {/* Side Bento Card */}
-          <div className="md:col-span-4 glass-card-v2 rounded-[2.5rem] p-12 flex flex-col justify-center text-center group">
-            <div className="text-5xl mb-8 group-hover:scale-125 transition-transform duration-700">⚡</div>
-            <h3 className="text-2xl font-black text-white mb-4 tracking-tighter uppercase">Speed Dominance</h3>
-            <p className="text-sm text-slate-400 font-light leading-relaxed mb-10">
-              Landing pages built for 100/100 performance scores. Zero friction between click and conversion.
-            </p>
-            <div className="h-[2px] w-12 bg-cyan-500 mx-auto opacity-40" />
-          </div>
-
-          {/* Small Cards */}
-          {["Global SEO", "AEO Ready", "Technical CRM", "24/7 Uptime"].map((f, i) => (
-            <div key={i} className="md:col-span-3 glass-card-v2 rounded-3xl p-10 group">
-              <span className="text-[8px] text-mono text-cyan-400 font-bold mb-6 block">LAYER_{i + 3}</span>
-              <h4 className="text-sm font-black text-white uppercase tracking-widest">{f}</h4>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Futuristic Pricing Section */}
-      <section id="pricing" className="relative z-10 py-64 bg-white/[0.01]">
-        <div className="max-w-[1440px] mx-auto px-10">
-          <div className="text-center mb-32">
-            <span className="text-mono text-[10px] text-cyan-400 font-bold mb-6 block tracking-[0.5em]">03 // TIERS</span>
-            <h2 className="text-7xl md:text-9xl font-black text-white italic tracking-tighter opacity-10">INVESTMENT.</h2>
-            <p className="text-2xl font-black text-white mt-[-2rem] md:mt-[-4rem]">TRANSPARENT VALUE ENGINE.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {[
-              { title: "Standard", price: "100", icon: "🌐" },
-              { title: "Autonomous", price: "50", icon: "🧠" },
-              { title: "Vanguard Bundle", price: "150", icon: "💠" }
-            ].map((tier, i) => (
-              <div key={i} className={`glass-card-v2 rounded-[3.5rem] p-16 border border-white/5 relative overflow-hidden group ${i === 1 ? 'border-cyan-500/30' : ''}`}>
-                {i === 1 && (
-                  <div className="absolute top-0 right-0 px-8 py-2 bg-cyan-500 text-slate-950 text-[9px] text-mono font-black italic rounded-bl-3xl">PRO_CHOICE</div>
-                )}
-                <div className="text-4xl mb-12">{tier.icon}</div>
-                <h3 className="text-xl font-bold text-slate-500 uppercase tracking-[0.4em] mb-4">{tier.title}</h3>
-                <div className="flex items-baseline gap-2 mb-16">
-                  <span className="text-7xl font-black tracking-tighter">${tier.price}</span>
-                  <span className="text-slate-500 text-mono text-[10px] uppercase">/SET_UP</span>
-                </div>
-                <ul className="space-y-6 mb-20 text-xs font-medium text-slate-300">
-                  <li className="flex items-center gap-4">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> Professional Setup
-                  </li>
-                  <li className="flex items-center gap-4">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> Maintenance Plan
-                  </li>
-                </ul>
-                <button className="w-full py-6 rounded-2xl glass-v2 border-white/10 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all font-black text-xs text-mono tracking-widest">
-                  INITIALIZE_TIER
-                </button>
-              </div>
+          <div className="hidden md:flex items-center gap-8">
+            {["Services", "Pricing", "Demo"].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-[10px] font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-widest"
+              >
+                {item}
+              </a>
             ))}
           </div>
+
+          <div className="h-4 w-[1px] bg-white/10 hidden md:block" />
+
+          <button className="text-[10px] font-black tracking-widest text-primary uppercase hover:text-white transition-colors">
+            Launch Site
+          </button>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="relative z-10 pt-48 pb-32 px-6 max-w-7xl mx-auto text-center">
+        <Reveal>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="text-[9px] font-bold text-primary uppercase tracking-[0.2em]">Scale Your Service Business</span>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <h1 className="text-hero text-5xl md:text-8xl text-white mb-8 tracking-tighter">
+            YOUR SERVICE BUSINESS, <br />
+            <span className="text-gradient">ACCELERATED BY AI.</span>
+          </h1>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+            Professional landing pages and AI Agents for local service pros. Get a world-class digital presence while you stay on the job.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.3}>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <button className="relative group px-10 py-5 bg-white text-dark rounded-xl font-black text-[11px] uppercase tracking-widest hover:bg-primary transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(14,165,233,0.3)]">
+              Launch Your Site
+            </button>
+            <button className="px-10 py-5 glass-v2 rounded-xl font-black text-[11px] uppercase tracking-widest text-white hover:bg-white/5 transition-all">
+              Try the Bot
+            </button>
+          </div>
+        </Reveal>
+      </header>
+
+      {/* Bento Grid Service Section */}
+      <section id="services" className="relative z-10 py-32 px-6 max-w-7xl mx-auto">
+        <div className="mb-20">
+          <Reveal>
+            <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">01 // Industries</span>
+            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">BUILT FOR PROS.</h2>
+          </Reveal>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {/* Main Industry Card */}
+          <div className="md:col-span-2 lg:col-span-3 glass-card-v2 p-10 rounded-3xl flex flex-col justify-between group overflow-hidden relative min-h-[400px]">
+            <div className="absolute top-[-10%] right-[-10%] opacity-5 group-hover:opacity-10 transition-opacity">
+              <Droplet size={300} strokeWidth={1} />
+            </div>
+            <div>
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8 border border-primary/20">
+                <Droplet size={24} />
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 uppercase">Plumbing</h3>
+              <p className="text-slate-400 font-light leading-relaxed max-w-xs">
+                Emergency dispatch templates and AI qualification for high-stress repairs.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-[10px] font-black text-primary tracking-widest uppercase">
+              Learn More <ArrowRight size={14} />
+            </div>
+          </div>
+
+          {/* Electrician Card */}
+          <div className="md:col-span-2 lg:col-span-3 glass-card-v2 p-10 rounded-3xl flex flex-col justify-between group min-h-[400px]">
+            <div>
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8 border border-primary/20">
+                <Power size={24} />
+              </div>
+              <h3 className="text-3xl font-black text-white mb-4 uppercase">Electrical</h3>
+              <p className="text-slate-400 font-light leading-relaxed max-w-xs">
+                Showcase your master services with high-conversion project grids and instant quoting.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-[10px] font-black text-primary tracking-widest uppercase">
+              Learn More <ArrowRight size={14} />
+            </div>
+          </div>
+
+          {/* Landscaping Card */}
+          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group">
+            <Landscaping className="text-primary mb-6" size={32} strokeWidth={1.5} />
+            <h4 className="text-xl font-black text-white mb-3 uppercase tracking-tight">Landscaping</h4>
+            <p className="text-sm text-slate-400 font-light mb-6">Visual galleries that turn browsing into bookings.</p>
+            <div className="h-[1px] w-full bg-white/5 group-hover:bg-primary/20 transition-colors" />
+          </div>
+
+          {/* HVAC Card */}
+          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group">
+            <Thermometer className="text-primary mb-6" size={32} strokeWidth={1.5} />
+            <h4 className="text-xl font-black text-white mb-3 uppercase tracking-tight">HVAC</h4>
+            <p className="text-sm text-slate-400 font-light mb-6">Maintenance plans and emergency AI support agents.</p>
+            <div className="h-[1px] w-full bg-white/5 group-hover:bg-primary/20 transition-colors" />
+          </div>
+
+          {/* Infrastructure Card */}
+          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group flex flex-col justify-center items-center text-center">
+            <Cpu className="text-primary mb-6" size={32} strokeWidth={1.5} />
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Infrastructure</span>
+            <h4 className="text-md font-black text-white uppercase tracking-widest">Built with Antigravity</h4>
+          </div>
         </div>
       </section>
 
-      {/* Technical Footer */}
-      <footer className="relative z-10 py-32 px-10 max-w-[1440px] mx-auto border-t border-white/5 bg-mesh-v2">
-        <div className="grid md:grid-cols-4 gap-20 mb-32 items-start">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-4 mb-10 overflow-hidden">
-              <span className="text-[10px] text-mono text-cyan-400 font-bold whitespace-nowrap">VANGUARD_SYSTEMS_OVERVIEW</span>
-              <div className="h-[1px] bg-gradient-to-r from-cyan-500/50 to-transparent w-full" />
+      {/* Pricing Bento Section */}
+      <section id="pricing" className="relative z-10 py-32 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-20">
+          <Reveal>
+            <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">02 // Pricing</span>
+            <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter italic opacity-50">INVESTMENT</h2>
+          </Reveal>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Landing Page Tier */}
+          <div className="glass-card-v2 p-12 rounded-3xl flex flex-col justify-between min-h-[500px] border border-white/5">
+            <div>
+              <div className="text-primary mb-8"><Layout size={32} strokeWidth={1.5} /></div>
+              <h3 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.4em] mb-6">Landing Page</h3>
+              <div className="flex items-baseline gap-2 mb-10">
+                <span className="text-6xl font-black text-white tracking-tighter">$100</span>
+                <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">/ flat</span>
+              </div>
+              <ul className="space-y-4 text-xs font-medium text-slate-400">
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Premium Design</li>
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Vercel Hosting</li>
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Mobile Optimized</li>
+              </ul>
             </div>
-            <h4 className="text-2xl font-black text-white mb-6 tracking-widest uppercase">AI VANGUARD</h4>
-            <p className="text-xs text-slate-500 font-bold tracking-widest leading-loose uppercase max-w-sm">
-              The vanguard of trade business excellence. building technical sovereignty for those who build the physical world.
+            <button className="w-full py-5 rounded-xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/5 transition-colors">
+              Initialize Project
+            </button>
+          </div>
+
+          {/* Vanguard Bundle Tier */}
+          <div className="shimmer-border rounded-3xl p-12 flex flex-col justify-between min-h-[500px] bg-white/[0.02] border-primary/30 relative">
+            <div className="absolute top-0 right-0 px-4 py-1.5 bg-primary text-dark text-[9px] font-black uppercase tracking-widest rounded-bl-xl">Best Value</div>
+            <div>
+              <div className="text-primary mb-8 flex gap-2"><Layout size={24} strokeWidth={1.5} /> <span className="opacity-50">+</span> <Bot size={24} strokeWidth={1.5} /></div>
+              <h3 className="text-[12px] font-bold text-slate-300 uppercase tracking-[0.4em] mb-6">Vanguard Bundle</h3>
+              <div className="flex items-baseline gap-2 mb-10">
+                <span className="text-6xl font-black text-white tracking-tighter text-gradient">$150</span>
+                <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">/ total</span>
+              </div>
+              <ul className="space-y-4 text-xs font-medium text-slate-300">
+                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Website + AI Agent</li>
+                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Lead Auto-Qualification</li>
+                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> SEO Integration</li>
+                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Priority Activation</li>
+              </ul>
+            </div>
+            <button className="w-full py-5 rounded-xl bg-primary text-dark text-[10px] font-black uppercase tracking-widest hover:bg-white transition-colors">
+              Activate Bundle
+            </button>
+          </div>
+
+          {/* AI Chatbot Tier */}
+          <div className="glass-card-v2 p-12 rounded-3xl flex flex-col justify-between min-h-[500px] border border-white/5">
+            <div>
+              <div className="text-primary mb-8"><Bot size={32} strokeWidth={1.5} /></div>
+              <h3 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.4em] mb-6">AI Chatbot</h3>
+              <div className="flex items-baseline gap-2 mb-10">
+                <span className="text-6xl font-black text-white tracking-tighter">$50</span>
+                <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">/ bot</span>
+              </div>
+              <ul className="space-y-4 text-xs font-medium text-slate-400">
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Custom Knowledge Base</li>
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Lead Capture Logic</li>
+                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Easy CRM Integration</li>
+              </ul>
+            </div>
+            <button className="w-full py-5 rounded-xl border border-white/10 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/5 transition-colors">
+              Deploy Agent
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Stats Footer */}
+      <footer className="relative z-10 pt-32 pb-16 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+          <div className="md:col-span-2">
+            <h4 className="text-2xl font-black text-white mb-6 uppercase tracking-widest">AI Vanguard</h4>
+            <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xs uppercase tracking-tight">
+              Scaling service businesses with sovereign digital infrastructure. Built for those who build the world.
             </p>
           </div>
 
-          <div className="flex flex-col gap-10">
-            <h5 className="text-[10px] text-mono text-white font-black tracking-[0.5em] uppercase">Connect</h5>
-            <nav className="flex flex-col gap-5 text-[10px] text-mono text-slate-500 font-bold tracking-widest">
-              <a href="#" className="hover:text-cyan-400">INSTAGRAM</a>
-              <a href="#" className="hover:text-cyan-400">LINKEDIN</a>
-              <a href="#" className="hover:text-cyan-400">EMAIL</a>
-            </nav>
+          <div className="flex flex-col gap-4">
+            <span className="text-[10px] font-bold text-white uppercase tracking-[0.4em] mb-2">Systems</span>
+            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <Globe size={12} strokeWidth={2} /> Hosted on Vercel
+            </div>
+            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <Power size={12} strokeWidth={2} /> Powered by Edge
+            </div>
           </div>
 
-          <div className="flex flex-col gap-10">
-            <h5 className="text-[10px] text-mono text-white font-black tracking-[0.5em] uppercase">Region</h5>
-            <nav className="flex flex-col gap-5 text-[10px] text-mono text-slate-500 font-bold tracking-widest">
-              <span className="text-cyan-500/60">DUBAI, UAE_</span>
-              <span className="text-cyan-500/60">LONDON, UK_</span>
-              <span className="text-cyan-500/60">BERLIN, DE_</span>
-            </nav>
+          <div className="flex flex-col gap-4">
+            <span className="text-[10px] font-bold text-white uppercase tracking-[0.4em] mb-2">Status</span>
+            <div className="flex items-center gap-2 text-primary text-[10px] font-bold uppercase tracking-widest">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> All Systems Online
+            </div>
+            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+              <Clock size={12} strokeWidth={2} /> Global Support 24/7
+            </div>
           </div>
         </div>
 
-        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10 opacity-30">
-          <span className="text-[9px] text-mono font-black tracking-[0.4em] text-white">© 2025 AI_VANGUARD // ALL_RIGHTS_RESERVED</span>
-          <div className="flex items-center gap-8">
-            <span className="text-[9px] text-mono font-black tracking-[0.4em] text-white">SYSTEMS:NOMINAL</span>
-            <span className="text-[9px] text-mono font-black tracking-[0.4em] text-white">PWRBY:ANTIGRAVITY</span>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em]">© 2026 AI Vanguard // Elite Tech for Industry</span>
+          <div className="flex gap-8">
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em]">Privacy</span>
+            <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.5em]">Terms</span>
           </div>
         </div>
       </footer>
