@@ -222,20 +222,16 @@ export default function LandingPage() {
             
             <motion.div 
               variants={FADE_UP_ANIMATION_VARIANTS}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+              className="flex items-center justify-center pt-4"
             >
-              <div className="relative w-full sm:w-auto group">
+              <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse" />
-                <button className="relative w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-dark text-white font-semibold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md overflow-hidden">
+                <button className="relative px-10 py-4 rounded-xl bg-brand-dark text-white font-semibold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-brand-cyan/20 to-brand-blue/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  Launch Your Site
+                  How it Works
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-              <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-brand-border text-brand-dark font-semibold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
-                <Bot className="w-5 h-5 text-brand-blue" />
-                Try the Bot
-              </button>
             </motion.div>
 
             <motion.div 
