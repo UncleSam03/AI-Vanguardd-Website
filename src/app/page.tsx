@@ -179,9 +179,6 @@ export default function LandingPage() {
             <Link href="#faq" className="hover:text-brand-blue transition-colors">FAQ</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <button className="hidden md:block text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">
-              Log in
-            </button>
             <button className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm">
               Get Started
             </button>
