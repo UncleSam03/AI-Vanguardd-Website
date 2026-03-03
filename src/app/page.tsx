@@ -327,36 +327,40 @@ export default function LandingPage() {
               </motion.div>
 
               {/* Vanguard Bundle (Highlighted) */}
-              <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="relative p-[1px] rounded-3xl overflow-hidden group shadow-lg">
-                {/* Shimmer Border Effect */}
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,#06B6D4_50%,transparent_100%)] bg-[length:200%_100%] animate-shimmer" />
-                
-                <div className="relative p-8 rounded-[23px] bg-white flex flex-col h-full">
-                  <div className="absolute top-0 right-8 transform -translate-y-1/2">
-                    <span className="bg-gradient-to-r from-brand-cyan to-brand-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                      Most Popular
-                    </span>
+              <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="relative group">
+                {/* Badge moved here, outside overflow-hidden */}
+                <div className="absolute top-0 right-8 transform -translate-y-1/2 z-20">
+                  <span className="bg-gradient-to-r from-brand-cyan to-brand-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                    Most Popular
+                  </span>
+                </div>
+
+                <div className="relative p-[1px] rounded-3xl overflow-hidden shadow-lg h-full">
+                  {/* Shimmer Border Effect */}
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,#06B6D4_50%,transparent_100%)] bg-[length:200%_100%] animate-shimmer" />
+                  
+                  <div className="relative p-8 rounded-[23px] bg-white flex flex-col h-full">
+                    <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
+                      <Sparkles className="w-6 h-6 text-brand-blue" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2 text-brand-dark">Vanguard Bundle</h3>
+                    <p className="text-slate-500 text-sm mb-6">The complete digital presence package.</p>
+                    <div className="mb-8">
+                      <span className="text-4xl font-bold text-brand-dark">$150</span>
+                      <span className="text-slate-400 font-medium">/mo</span>
+                    </div>
+                    <ul className="space-y-4 mb-8 flex-1">
+                      {['Everything in Landing Page', 'Everything in AI Chatbot', 'Priority Support', 'Monthly Performance Report'].map((feature, i) => (
+                        <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                          <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <button className="w-full py-3 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm">
+                      Get the Bundle
+                    </button>
                   </div>
-                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
-                    <Sparkles className="w-6 h-6 text-brand-blue" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-brand-dark">Vanguard Bundle</h3>
-                  <p className="text-slate-500 text-sm mb-6">The complete digital presence package.</p>
-                  <div className="mb-8">
-                    <span className="text-4xl font-bold text-brand-dark">$150</span>
-                    <span className="text-slate-400 font-medium">/mo</span>
-                  </div>
-                  <ul className="space-y-4 mb-8 flex-1">
-                    {['Everything in Landing Page', 'Everything in AI Chatbot', 'Priority Support', 'Monthly Performance Report'].map((feature, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                        <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="w-full py-3 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm">
-                    Get the Bundle
-                  </button>
                 </div>
               </motion.div>
 
