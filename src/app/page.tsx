@@ -12,7 +12,11 @@ import {
   Bot, 
   Globe, 
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  Instagram,
+  Facebook,
+  Linkedin,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -418,10 +422,19 @@ export default function LandingPage() {
             <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
           <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} AI Vanguard. All rights reserved.</p>
-          <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
-            <Link href="#" className="hover:text-brand-blue transition-colors">Twitter</Link>
-            <Link href="#" className="hover:text-brand-blue transition-colors">LinkedIn</Link>
-            <Link href="#" className="hover:text-brand-blue transition-colors">Contact</Link>
+          <div className="flex items-center gap-6">
+            <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
+              <Instagram className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
+              <Facebook className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
+              <MessageSquare className="w-5 h-5" /> {/* WhatsApp Placeholder */}
+            </Link>
+            <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
+              <Linkedin className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </footer>
