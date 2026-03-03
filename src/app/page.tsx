@@ -428,7 +428,12 @@ export default function LandingPage() {
             <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
               <Facebook className="w-5 h-5" />
             </Link>
-            <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
+            <Link 
+              href="https://wa.me/26775911908" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-slate-500 hover:text-brand-blue transition-colors"
+            >
               <svg 
                 viewBox="0 0 24 24" 
                 className="w-5 h-5 fill-current"
