@@ -375,14 +375,14 @@ export default function LandingPage() {
                   <span className="text-4xl font-bold text-brand-dark">$50</span>
                   <span className="text-slate-400 font-medium">/mo</span>
                 </div>
-                <ul className="space-y-4 mb-8 flex-1">
-                  {['24/7 Lead Qualification', 'Automated Scheduling', 'Custom Knowledge Base', 'SMS Integration'].map((feature, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                      <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                  <ul className="space-y-4 mb-8 flex-1">
+                    {['24/7 Lead Qualification', 'Automated Scheduling', 'Custom Knowledge Base', 'Instagram and Messenger Integration'].map((feature, i) => (
+                      <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                        <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
                 <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
                   Get Started
                 </button>
