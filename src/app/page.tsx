@@ -1,276 +1,410 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
 import { 
+  Wrench, 
   Zap, 
+  Leaf, 
+  Thermometer, 
+  ArrowRight, 
+  CheckCircle2, 
   Bot, 
-  Smartphone,
-  ArrowRight,
-  CheckCircle2,
-  Construction,
-  Wrench,
-  Zap as ElectricianIcon,
-  Sprout
-} from "lucide-react";
-import { ParticleCanvas } from "./components/ParticleCanvas";
+  Globe, 
+  Sparkles,
+  ShieldCheck
+} from 'lucide-react';
+import Link from 'next/link';
 
-/* ─────────────────── COMPONENTS ─────────────────── */
+const ParticleBackground = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-const Reveal = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 16 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-const IndustryCard = ({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) => (
-  <Reveal className="bento-card-light rounded-3xl p-8 group">
-    <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-primary mb-6 transition-colors group-hover:bg-cyan-50 group-hover:text-cyan-600">
-      <Icon size={24} />
-    </div>
-    <h3 className="text-xl font-bold text-dark mb-2 tracking-tight">{title}</h3>
-    <p className="text-muted text-sm leading-relaxed">{desc}</p>
-  </Reveal>
-);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
 
-const PricingCard = ({ title, price, features, isFeatured = false }: { title: string; price: string; features: string[]; isFeatured?: boolean }) => (
-  <Reveal className={`bento-card-light rounded-[2.5rem] p-10 flex flex-col h-full bg-white relative ${isFeatured ? 'border-trace' : ''}`}>
-    <div className="relative z-20">
-      <h3 className="text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-2">{title}</h3>
-      <div className="flex items-baseline gap-1 mb-10">
-        <span className="text-5xl font-extrabold text-dark tracking-tighter">${price}</span>
-        <span className="text-slate-400 text-sm font-medium">/one-time</span>
-      </div>
-      <ul className="space-y-5 mb-12 flex-grow">
-        {features.map((f, i) => (
-          <li key={i} className="flex items-center gap-3 text-[15px] text-slate-600 font-medium">
-            <CheckCircle2 size={18} className="text-cyan-500 shrink-0" />
-            {f}
-          </li>
-        ))}
-      </ul>
-      <button className={`w-full py-5 rounded-2xl font-bold text-[15px] transition-all transform active:scale-95 ${isFeatured ? 'btn-primary-light shadow-xl shadow-cyan-500/20' : 'bg-slate-50 text-dark border border-slate-200 hover:bg-slate-100'}`}>
-        Choose {title.split(' ')[0]}
-      </button>
-    </div>
-  </Reveal>
-);
+    interface Particle {
+      x: number;
+      y: number;
+      targetX: number;
+      targetY: number;
+      angle: number;
+      radius: number;
+    }
 
-/* ─────────────────── MAIN PAGE ─────────────────── */
+    const particles: Particle[] = [];
+    const numParticles = 700;
 
-export default function Home() {
-  return (
-    <main className="relative min-h-screen bg-bg text-dark selection:bg-cyan-100">
-      
-      {/* HIGH-DEF PARTICLE SYSTEM */}
-      <ParticleCanvas />
-
-      {/* ─────────────────── NAV ─────────────────── */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] nav-blur-light px-6 md:px-16 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-600/20">
-            <span className="text-white font-black text-lg">V</span>
-          </div>
-          <span className="text-sm font-extrabold text-dark tracking-tighter uppercase">AI Vanguard</span>
-        </div>
-
-        <div className="hidden lg:flex items-center gap-12">
-          {["Solutions", "Process", "Pricing"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-[13px] font-bold text-slate-500 hover:text-dark transition-colors tracking-tight"
-            >
-              {item}
-            </a>
-          ))}
-        </div>
-
-        <button className="text-[13px] font-bold text-dark border-b-2 border-cyan-500 pb-0.5 hover:border-cyan-600 transition-all">
-          Launch Console
-        </button>
-      </nav>
-
-      {/* ─────────────────── HERO ─────────────────── */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 pt-24 overflow-hidden">
-        <div className="hero-glow-light" />
+    const isInsideLogo = (x: number, y: number) => {
+        const thickness = 14;
         
-        <Reveal>
-          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-slate-200 bg-white/50 backdrop-blur shadow-sm text-cyan-700 text-[11px] font-bold tracking-widest uppercase mb-10">
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-            System Status: Active
-          </div>
-        </Reveal>
+        // V shape
+        const distLeft = Math.abs(x - y + 80) / Math.SQRT2;
+        const distRight = Math.abs(x + y - 80) / Math.SQRT2;
+        
+        const inLeftArm = distLeft < thickness && x > -110 && x < 0 && y > -30 && y < 90;
+        const inRightArm = distRight < thickness && x > 0 && x < 110 && y > -30 && y < 90;
+        
+        // Towers
+        const inCenterTower = x > -12 && x < 12 && y > -100 && y < 50;
+        const inLeftTower = x > -28 && x < -12 && y > -50 && y < 30;
+        const inRightTower = x > 12 && x < 28 && y > -70 && y < 40;
+        const inFarRightTower = x > 28 && x < 42 && y > -30 && y < 20;
+        const inFarLeftTower = x > -42 && x < -28 && y > -10 && y < 10;
 
-        <Reveal delay={0.1}>
-          <h1 className="text-hero text-6xl md:text-[110px] max-w-[1200px] tracking-tighter leading-[0.9] text-dark mb-10">
-            Your Service Business, <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600">Accelerated by AI.</span>
-          </h1>
-        </Reveal>
+        return inLeftArm || inRightArm || inCenterTower || inLeftTower || inRightTower || inFarRightTower || inFarLeftTower;
+    };
 
-        <Reveal delay={0.2}>
-          <p className="text-slate-500 text-lg md:text-2xl max-w-2xl leading-relaxed mb-16 font-medium">
-            Professional landing pages and AI Agents for local service pros. <br className="hidden md:block"/>
-            Get a world-class digital presence while you stay on the job.
-          </p>
-        </Reveal>
+    for (let i = 0; i < numParticles; i++) {
+       let tx = 0, ty = 0;
+       while(true) {
+          tx = (Math.random() - 0.5) * 240;
+          ty = (Math.random() - 0.5) * 240;
+          if (isInsideLogo(tx, ty)) break;
+       }
+       
+       particles.push({
+         x: Math.random() * width,
+         y: Math.random() * height,
+         targetX: tx,
+         targetY: ty,
+         angle: Math.random() * Math.PI * 2,
+         radius: 1 + Math.random() * 1.5
+       });
+    }
 
-        <Reveal delay={0.3} className="flex flex-col sm:flex-row gap-5 items-center">
-          <button className="btn-primary-light px-12 py-5 rounded-2xl text-[17px] font-bold shadow-2xl shadow-cyan-600/30">
-            Launch Your Site
-          </button>
-          <button className="bg-white px-12 py-5 rounded-2xl text-[17px] font-bold border border-slate-200 shadow-sm hover:bg-slate-50 transition-all active:scale-95">
-            Try the Bot
-          </button>
-        </Reveal>
+    let animationFrameId: number;
+    let time = 0;
 
-        <Reveal delay={0.4} className="mt-32">
-          <p className="text-[11px] font-bold text-slate-400 tracking-[0.4em] uppercase mb-6">Proven Technology Infrastructure</p>
-          <div className="flex flex-wrap gap-12 items-center justify-center opacity-40">
-            <span className="font-extrabold text-[15px] tracking-tighter">Hosted on Vercel</span>
-            <span className="font-extrabold text-[15px] tracking-tighter">Powered by Next.js 15</span>
-            <span className="font-extrabold text-[15px] tracking-tighter">Built with Antigravity</span>
-          </div>
-        </Reveal>
-      </section>
+    const render = () => {
+      time += 0.01;
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = '#0891B2'; // Cyan
 
-      {/* ─────────────────── SERVICE GRID ─────────────────── */}
-      <section id="solutions" className="py-40 px-6 max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-24">
-          <div className="max-w-xl">
-            <p className="text-cyan-600 font-bold text-xs tracking-widest uppercase mb-4">Core Solutions</p>
-            <Reveal>
-              <h2 className="text-5xl font-extrabold text-dark tracking-tighter leading-none mb-6">Elite websites for the <br/>skilled trades.</h2>
-            </Reveal>
-            <p className="text-slate-500 text-xl font-medium">Industry-specific engineering to ensure your customers find you first, every time.</p>
-          </div>
-          <button className="flex items-center gap-2 text-cyan-600 font-bold text-sm tracking-tight hover:gap-3 transition-all">
-            See all industries <ArrowRight size={18} />
-          </button>
-        </div>
+      const centerX = width / 2;
+      const centerY = height / 2 - 50; 
+      const scale = Math.min(width, height) / 500; 
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <IndustryCard icon={Wrench} title="Plumbing" desc="Leak detection, heating installs, and emergency response pipelines." />
-          <IndustryCard icon={ElectricianIcon} title="Electrical" desc="Full rewires, smart home setups, and recurring safety checks." />
-          <IndustryCard icon={Sprout} title="Landscaping" desc="Garden architecture and maintenance scheduling automation." />
-          <IndustryCard icon={Construction} title="HVAC" desc="Climate control systems and preventative maintenance tracking." />
-        </div>
-      </section>
+      particles.forEach(p => {
+         const screenTargetX = centerX + p.targetX * scale;
+         const screenTargetY = centerY + p.targetY * scale;
 
-      {/* ─────────────────── FEATURES BENTO ─────────────────── */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Reveal className="bento-card-light rounded-[3rem] p-12 bg-white flex flex-col justify-between group overflow-hidden relative min-h-[500px]">
-             <div className="absolute top-0 right-0 p-12 text-slate-50 transform rotate-12 -translate-y-4 translate-x-4">
-                <Smartphone size={240} />
-             </div>
-             <div className="relative z-10 max-w-sm">
-                <Smartphone className="text-cyan-600 mb-8" size={40} />
-                <h3 className="text-4xl font-extrabold text-dark mb-6 tracking-tighter">Mobile-first <br/>conversion.</h3>
-                <p className="text-slate-500 text-lg leading-relaxed font-medium">92% of local trade searches happen on mobile. We build for the palm of their hand first.</p>
-             </div>
-             <div className="relative z-10 pt-10">
-                <div className="inline-flex gap-1.5 px-4 py-2 bg-slate-50 rounded-full text-xs font-bold text-slate-500">
-                  <Zap size={14} fill="currentColor" /> Ultra Fast CDN
-                </div>
-             </div>
-          </Reveal>
+         const floatX = Math.sin(time + p.angle) * 15;
+         const floatY = Math.cos(time + p.angle) * 15;
 
-          <Reveal delay={0.1} className="bento-card-light rounded-[3rem] p-12 bg-slate-900 flex flex-col justify-between group overflow-hidden relative min-h-[500px]">
-             <div className="absolute top-0 right-0 p-12 text-white/5 transform -rotate-12 translate-x-12">
-                <Bot size={280} />
-             </div>
-             <div className="relative z-10 max-w-sm">
-                <Bot className="text-cyan-400 mb-8" size={40} />
-                <h3 className="text-4xl font-extrabold text-white mb-6 tracking-tighter">AI-powered <br/>lead capture.</h3>
-                <p className="text-white/40 text-lg leading-relaxed font-medium">Our custom support bots qualify leads at 3am so you wake up to booked jobs, not just emails.</p>
-             </div>
-             <button className="relative z-10 bg-white/10 hover:bg-white/20 text-white font-bold p-5 rounded-2xl transition-all flex items-center justify-between group-hover:px-7">
-                View Agent Showcase <ArrowRight size={20} />
-             </button>
-          </Reveal>
-        </div>
-      </section>
+         const finalTargetX = screenTargetX + floatX;
+         const finalTargetY = screenTargetY + floatY;
 
-      {/* ─────────────────── PRICING ─────────────────── */}
-      <section id="pricing" className="py-40 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-28">
-           <Reveal>
-              <h2 className="text-5xl md:text-6xl font-extrabold text-dark tracking-tighter leading-none mb-8">Transparent Engineering.</h2>
-              <p className="text-slate-500 text-2xl font-medium max-w-2xl mx-auto">No recurring management fees. Pay for elite tools once, keep them forever.</p>
-           </Reveal>
-        </div>
+         p.x += (finalTargetX - p.x) * 0.04;
+         p.y += (finalTargetY - p.y) * 0.04;
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <PricingCard 
-            title="Landing Pages" 
-            price="100" 
-            features={["Custom Design System", "Local SEO Infrastructure", "Contact Form Engine", "SSL & Hosting included"]}
-          />
-          <PricingCard 
-            title="Vanguard Bundle" 
-            price="150" 
-            isFeatured={true}
-            features={["Pro Landing Page", "Custom AI Chatbot", "24/7 Automated Booking", "Priority Technical Support", "Vercel Enterprise Edge"]}
-          />
-          <PricingCard 
-            title="AI Chatbots" 
-            price="50" 
-            features={["Custom Knowledge Base", "24/7 Lead Qualification", "SMS/Email Notifications", "Easy Website Embed"]}
-          />
-        </div>
-      </section>
+         ctx.beginPath();
+         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+         ctx.fill();
+      });
 
-      {/* ─────────────────── FOOTER ─────────────────── */}
-      <footer className="py-24 px-6 border-t border-slate-100 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-20">
-          <div className="max-w-xs">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 bg-dark rounded-xl flex items-center justify-center">
-                <span className="text-white font-black">V</span>
-              </div>
-              <span className="text-sm font-black text-dark tracking-tighter uppercase">AI Vanguard</span>
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    const handleResize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="fixed inset-0 pointer-events-none z-0 opacity-40"
+    />
+  );
+};
+
+const FADE_UP_ANIMATION_VARIANTS = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 100, damping: 20 } },
+};
+
+const STAGGER_CHILDREN_VARIANTS = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-brand-light text-brand-dark overflow-hidden selection:bg-brand-cyan/30 relative">
+      <ParticleBackground />
+      
+      {/* Navigation */}
+      <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-brand-border">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-blue flex items-center justify-center shadow-sm">
+              <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed font-medium">
-              World-class digital presence for the individuals who build and maintain the world.
-            </p>
+            <span className="font-bold text-xl tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+            <Link href="#services" className="hover:text-brand-blue transition-colors">Services</Link>
+            <Link href="#pricing" className="hover:text-brand-blue transition-colors">Pricing</Link>
+            <Link href="#faq" className="hover:text-brand-blue transition-colors">FAQ</Link>
+          </nav>
+          <div className="flex items-center gap-4">
+            <button className="hidden md:block text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">
+              Log in
+            </button>
+            <button className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main className="pt-32 pb-24 px-6 relative z-10">
+        {/* Hero Section */}
+        <section className="max-w-4xl mx-auto text-center mb-32 relative">
+          {/* Background Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-20">
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[11px] font-black text-slate-300 uppercase tracking-widest">Platform</h4>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">Infrastructure</a>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">Security</a>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">API Docs</a>
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={STAGGER_CHILDREN_VARIANTS}
+            className="space-y-8"
+          >
+            <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-border bg-white shadow-sm text-sm text-brand-blue mb-4">
+              <Sparkles className="w-4 h-4 text-brand-cyan" />
+              <span className="font-medium">Premium for Everyone</span>
+            </motion.div>
+            
+            <motion.h1 
+              variants={FADE_UP_ANIMATION_VARIANTS}
+              className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1] text-brand-dark"
+            >
+              Your Service Business,<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">
+                Accelerated by AI.
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              variants={FADE_UP_ANIMATION_VARIANTS}
+              className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+            >
+              Professional landing pages and AI Agents for local service pros. Get a world-class digital presence while you stay on the job.
+            </motion.p>
+            
+            <motion.div 
+              variants={FADE_UP_ANIMATION_VARIANTS}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+            >
+              <div className="relative w-full sm:w-auto group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse" />
+                <button className="relative w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-dark text-white font-semibold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-brand-cyan/20 to-brand-blue/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  Launch Your Site
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+              <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-brand-border text-brand-dark font-semibold text-lg hover:bg-slate-50 transition-all flex items-center justify-center gap-2 shadow-sm">
+                <Bot className="w-5 h-5 text-brand-blue" />
+                Try the Bot
+              </button>
+            </motion.div>
+
+            <motion.div 
+              variants={FADE_UP_ANIMATION_VARIANTS}
+              className="flex items-center justify-center gap-6 pt-12 text-sm text-slate-500 font-medium"
+            >
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-slate-400" />
+                <span>Hosted on Vercel</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-slate-400" />
+                <span>Built with Antigravity</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Service Grid (Bento Box) */}
+        <section id="services" className="max-w-7xl mx-auto mb-32">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={STAGGER_CHILDREN_VARIANTS}
+            className="space-y-12"
+          >
+            <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="text-center space-y-4">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-dark">Built for the Trades</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">We understand your business. Our AI models are trained specifically for home service professionals to capture leads and book jobs.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                { icon: Wrench, title: "Plumbing", desc: "Emergency call routing & leak assessment bots." },
+                { icon: Zap, title: "Electrical", desc: "Quote generation & safety compliance checks." },
+                { icon: Leaf, title: "Landscaping", desc: "Seasonal service scheduling & visual portfolios." },
+                { icon: Thermometer, title: "HVAC", desc: "Maintenance reminders & diagnostic intake." }
+              ].map((service, i) => (
+                <motion.div 
+                  key={i}
+                  variants={FADE_UP_ANIMATION_VARIANTS}
+                  className="p-6 rounded-2xl bg-white border border-brand-border shadow-sm hover:shadow-md hover:border-brand-cyan/30 transition-all group"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <service.icon className="w-6 h-6 text-brand-blue" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-brand-dark">{service.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{service.desc}</p>
+                </motion.div>
+              ))}
             </div>
-            <div className="flex flex-col gap-5">
-              <h4 className="text-[11px] font-black text-slate-300 uppercase tracking-widest">Company</h4>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">About AI Vanguard</a>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">Case Studies</a>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">Terms</a>
+          </motion.div>
+        </section>
+
+        {/* Pricing (Bento Box) */}
+        <section id="pricing" className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={STAGGER_CHILDREN_VARIANTS}
+            className="space-y-12"
+          >
+            <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="text-center space-y-4">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-dark">Simple, Transparent Pricing</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto">No hidden fees. No complex tiers. Just the tools you need to grow.</p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+              {/* Landing Page */}
+              <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="p-8 rounded-3xl bg-white border border-brand-border shadow-sm flex flex-col h-full">
+                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
+                  <Globe className="w-6 h-6 text-brand-dark" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-brand-dark">Landing Page</h3>
+                <p className="text-slate-500 text-sm mb-6">High-converting, mobile-optimized site.</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-bold text-brand-dark">$100</span>
+                  <span className="text-slate-400 font-medium">/mo</span>
+                </div>
+                <ul className="space-y-4 mb-8 flex-1">
+                  {['Custom Domain', 'SEO Optimization', 'Lead Capture Forms', 'Fast Hosting'].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                      <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
+                  Get Started
+                </button>
+              </motion.div>
+
+              {/* Vanguard Bundle (Highlighted) */}
+              <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="relative p-[1px] rounded-3xl overflow-hidden group shadow-lg">
+                {/* Shimmer Border Effect */}
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,#06B6D4_50%,transparent_100%)] bg-[length:200%_100%] animate-shimmer" />
+                
+                <div className="relative p-8 rounded-[23px] bg-white flex flex-col h-full">
+                  <div className="absolute top-0 right-8 transform -translate-y-1/2">
+                    <span className="bg-gradient-to-r from-brand-cyan to-brand-blue text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                      Most Popular
+                    </span>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
+                    <Sparkles className="w-6 h-6 text-brand-blue" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-brand-dark">Vanguard Bundle</h3>
+                  <p className="text-slate-500 text-sm mb-6">The complete digital presence package.</p>
+                  <div className="mb-8">
+                    <span className="text-4xl font-bold text-brand-dark">$150</span>
+                    <span className="text-slate-400 font-medium">/mo</span>
+                  </div>
+                  <ul className="space-y-4 mb-8 flex-1">
+                    {['Everything in Landing Page', 'Everything in AI Chatbot', 'Priority Support', 'Monthly Performance Report'].map((feature, i) => (
+                      <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                        <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <button className="w-full py-3 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm">
+                    Get the Bundle
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* AI Chatbot */}
+              <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="p-8 rounded-3xl bg-white border border-brand-border shadow-sm flex flex-col h-full">
+                <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
+                  <Bot className="w-6 h-6 text-brand-dark" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-brand-dark">AI Chatbot</h3>
+                <p className="text-slate-500 text-sm mb-6">24/7 automated customer service.</p>
+                <div className="mb-8">
+                  <span className="text-4xl font-bold text-brand-dark">$50</span>
+                  <span className="text-slate-400 font-medium">/mo</span>
+                </div>
+                <ul className="space-y-4 mb-8 flex-1">
+                  {['24/7 Lead Qualification', 'Automated Scheduling', 'Custom Knowledge Base', 'SMS Integration'].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                      <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
+                  Get Started
+                </button>
+              </motion.div>
             </div>
-            <div className="hidden md:flex flex-col gap-5">
-              <h4 className="text-[11px] font-black text-slate-300 uppercase tracking-widest">Connect</h4>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">X (Twitter)</a>
-              <a href="#" className="text-sm font-bold text-slate-500 hover:text-cyan-600 transition-colors">Registry</a>
-            </div>
+          </motion.div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-brand-border py-12 px-6 relative z-10 bg-white/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-brand-blue" />
+            <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
-        </div>
-        <div className="max-w-7xl mx-auto pt-20 mt-20 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
-           <p className="text-xs font-bold text-slate-300 uppercase tracking-widest">© 2026 AI Vanguard. PRO-GRADE AUTOMATION.</p>
-           <div className="flex items-center gap-4">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">All Core Systems Operational</span>
-           </div>
+          <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} AI Vanguard. All rights reserved.</p>
+          <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
+            <Link href="#" className="hover:text-brand-blue transition-colors">Twitter</Link>
+            <Link href="#" className="hover:text-brand-blue transition-colors">LinkedIn</Link>
+            <Link href="#" className="hover:text-brand-blue transition-colors">Contact</Link>
+          </div>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }
