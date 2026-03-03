@@ -199,7 +199,13 @@ export default function LandingPage() {
             className="space-y-8"
           >
             <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-border bg-white shadow-sm text-sm text-brand-blue mb-4">
-              <Sparkles className="w-4 h-4 text-brand-cyan" />
+              <Image 
+                src="/Logo.jpg" 
+                alt="AI Vanguard" 
+                width={16} 
+                height={16} 
+                className="rounded-sm"
+              />
               <span className="font-medium">Premium for Everyone</span>
             </motion.div>
             
@@ -341,7 +347,13 @@ export default function LandingPage() {
                   
                   <div className="relative p-8 rounded-[23px] bg-white flex flex-col h-full">
                     <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
-                      <Sparkles className="w-6 h-6 text-brand-blue" />
+                      <Image 
+                        src="/Logo.jpg" 
+                        alt="Vanguard Bundle" 
+                        width={24} 
+                        height={24} 
+                        className="rounded-md shadow-sm"
+                      />
                     </div>
                     <h3 className="text-xl font-semibold mb-2 text-brand-dark">Vanguard Bundle</h3>
                     <p className="text-slate-500 text-sm mb-6">The complete digital presence package.</p>
