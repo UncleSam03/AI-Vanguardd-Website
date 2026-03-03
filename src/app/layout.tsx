@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "600", "700", "900"] });
+const geist = Geist({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "900"],
+  variable: "--font-geist"
+});
 
 export const metadata: Metadata = {
-  title: "AI Vanguard | Elite Trade Business Automation & AI Agents",
-  description: "Transform your trade business with AI Vanguard. We build elite landing pages and custom AI Agents for high-performing tradesmen. Serving Europe and the Middle East.",
+  title: "AI Vanguard | Landing Pages for Service Pros",
+  description: "AI Vanguard builds high-converting websites for plumbers, electricians, landscapers, and every skilled trade — in minutes, not months.",
   keywords: ["Trade Business Automation", "AI Agents for Tradesmen", "Elite Landing Pages", "Tradesmen Website Design", "AI Vanguard", "Automation for Plumbers", "Automation for Electricians"],
   authors: [{ name: "AI Vanguard Team" }],
   openGraph: {
-    title: "AI Vanguard | Your Trade Business, Automated",
+    title: "AI Vanguard | Get a stunning landing page that books more jobs",
     description: "High-performance landing pages and AI bots for tradesmen. Scale your business with elite tech.",
     url: "https://ai-vanguard-landing-page.vercel.app",
     siteName: "AI Vanguard",
@@ -84,7 +88,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} bg-mesh antialiased`}>
+      <body className={`${geist.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>

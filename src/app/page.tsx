@@ -2,287 +2,239 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Zap,
-  Shield,
-  Bot,
-  Layout,
-  ArrowRight,
-  Droplet,
-  Zap as Power,
-  Trees as Landscaping,
-  Thermometer,
-  Cpu,
+import { 
+  Zap, 
+  Bot, 
+  Smartphone,
   Globe,
-  Clock
+  ArrowRight,
+  Layers
 } from "lucide-react";
+import { ParticleCanvas } from "./components/ParticleCanvas";
 
-const Reveal = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
+/* ─────────────────── COMPONENTS ─────────────────── */
+
+const Reveal = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
   >
     {children}
   </motion.div>
 );
 
+const ServiceCard = ({ icon: Icon, title, desc, delay = 0 }: { icon: React.ElementType; title: string; desc: string; delay?: number }) => (
+  <Reveal delay={delay} className="bento-card rounded-2xl p-8 flex flex-col gap-4">
+    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+      <Icon size={24} />
+    </div>
+    <div>
+      <h3 className="text-xl font-bold mb-2 tracking-tight">{title}</h3>
+      <p className="text-white/50 text-sm leading-relaxed">{desc}</p>
+    </div>
+  </Reveal>
+);
+
+const PricingCard = ({ title, price, features, isFeatured = false }: { title: string; price: string; features: string[]; isFeatured?: boolean }) => (
+  <Reveal className={`bento-card rounded-3xl p-8 flex flex-col h-full ${isFeatured ? 'shimmer-border' : ''}`}>
+    <div className={isFeatured ? 'shimmer-content' : ''}>
+      <h3 className="text-lg font-semibold text-white/70 mb-2">{title}</h3>
+      <div className="flex items-baseline gap-1 mb-8">
+        <span className="text-4xl font-bold">${price}</span>
+        <span className="text-white/40 text-sm">/one-time</span>
+      </div>
+      <ul className="space-y-4 mb-10 flex-grow">
+        {features.map((f, i) => (
+          <li key={i} className="flex items-center gap-3 text-sm text-white/60">
+            <Zap size={14} className="text-primary" />
+            {f}
+          </li>
+        ))}
+      </ul>
+      <button className={`w-full py-4 rounded-xl font-bold transition-all ${isFeatured ? 'bg-primary text-white btn-glow' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`}>
+        Get Started
+      </button>
+    </div>
+  </Reveal>
+);
+
+/* ─────────────────── MAIN PAGE ─────────────────── */
+
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-antimetal bg-grain selection:bg-primary/20 text-dark">
-      {/* Dynamic Background Elements */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-primary/5 blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[120px]" />
-        <div className="absolute inset-0 bg-mesh-v2 opacity-30" />
-      </div>
+    <main className="relative min-h-screen bg-midnight text-white selection:bg-primary/30">
+      
+      {/* BACKGROUND PARTICLE SYSTEM */}
+      <ParticleCanvas />
 
-      {/* Minimalism Sticky Navigation */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-6 flex justify-center">
-        <div className="glass-v2 px-6 py-3 rounded-full flex items-center gap-8 border-slate-200/50 backdrop-blur-xl">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-dark rounded-sm flex items-center justify-center">
-              <span className="text-[10px] font-black text-white">AV</span>
-            </div>
-            <span className="text-[12px] font-black tracking-widest text-dark uppercase">AI Vanguard</span>
+      {/* ─────────────────── NAV ─────────────────── */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] glass-dark border-b border-white/5 px-6 md:px-16 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+            <span className="text-white font-black text-sm uppercase">AV</span>
           </div>
-
-          <div className="hidden md:flex items-center gap-8">
-            {["Services", "Pricing", "Demo"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-[10px] font-bold text-slate-500 hover:text-primary transition-colors uppercase tracking-widest"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-
-          <div className="h-4 w-px bg-slate-200 hidden md:block" />
-
-          <button className="text-[10px] font-black tracking-widest text-primary uppercase hover:text-dark transition-colors">
-            Launch Site
-          </button>
+          <span className="text-sm font-bold tracking-widest uppercase">AI Vanguard</span>
         </div>
+
+        <div className="hidden lg:flex items-center gap-10">
+          {["Services", "Impact", "Pricing"].map((item) => (
+            <a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              className="text-[12px] font-medium text-white/50 hover:text-white transition-colors tracking-widest uppercase"
+            >
+              {item}
+            </a>
+          ))}
+        </div>
+
+        <button className="bg-white/5 border border-white/10 px-6 py-2.5 rounded-full text-[11px] font-bold tracking-widest uppercase hover:bg-white/10 transition-colors">
+          Log In
+        </button>
       </nav>
 
-      {/* Hero Section */}
-      <header className="relative z-10 pt-48 pb-32 px-6 max-w-7xl mx-auto text-center">
+      {/* ─────────────────── HERO ─────────────────── */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
+        <div className="hero-glow" />
+        
         <Reveal>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] font-bold tracking-widest uppercase mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            <span className="text-[9px] font-bold text-primary uppercase tracking-[0.2em]">Scale Your Service Business</span>
+            Elite Trade Automation
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h1 className="text-hero text-5xl md:text-8xl text-dark mb-8 tracking-tighter">
-            YOUR SERVICE BUSINESS, <br />
-            <span className="text-gradient">ACCELERATED BY AI.</span>
+          <h1 className="text-hero text-6xl md:text-[120px] max-w-5xl tracking-tighter leading-none mb-8">
+            Your Service Business, <br/>
+            <span className="text-gradient">Accelerated by AI.</span>
           </h1>
         </Reveal>
 
         <Reveal delay={0.2}>
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-            Professional landing pages and AI Agents for local service pros. Get a world-class digital presence while you stay on the job.
+          <p className="text-white/50 text-lg md:text-xl max-w-2xl leading-relaxed mb-12">
+            Professional landing pages and AI Agents for local service pros. <br className="hidden md:block"/>
+            Get a world-class digital presence while you stay on the job.
           </p>
         </Reveal>
 
-        <Reveal delay={0.3}>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <button className="relative group px-10 py-5 bg-dark text-white rounded-xl font-black text-[11px] uppercase tracking-widest hover:bg-primary transition-all hover:scale-105 active:scale-95 shadow-[0_20px_40px_rgba(11,15,26,0.15)]">
-              Launch Your Site
-            </button>
-            <button className="px-10 py-5 glass-v2 rounded-xl font-black text-[11px] uppercase tracking-widest text-dark hover:bg-slate-50 transition-all border-slate-200">
-              Try the Bot
-            </button>
+        <Reveal delay={0.3} className="flex flex-col sm:flex-row gap-4">
+          <button className="btn-glow bg-primary px-10 py-5 rounded-2xl text-[15px] font-bold">
+            Launch Your Site
+          </button>
+          <button className="bg-white/5 backdrop-blur-md border border-white/10 px-10 py-5 rounded-2xl text-[15px] font-bold hover:bg-white/10 transition-all">
+            Try the Bot
+          </button>
+        </Reveal>
+
+        <Reveal delay={0.4} className="mt-24 opacity-40">
+          <p className="text-[10px] font-bold tracking-[0.3em] uppercase mb-4">Powered by Elite Tech</p>
+          <div className="flex gap-10 items-center justify-center grayscale">
+            <span className="font-bold text-sm tracking-tight">Hosted on Vercel</span>
+            <span className="font-bold text-sm tracking-tight">Built with Antigravity</span>
           </div>
         </Reveal>
-      </header>
-
-      {/* Bento Grid Service Section */}
-      <section id="services" className="relative z-10 py-32 px-6 max-w-7xl mx-auto">
-        <div className="mb-20">
-          <Reveal>
-            <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">01 // Industries</span>
-            <h2 className="text-4xl md:text-6xl font-black text-dark tracking-tighter">BUILT FOR PROS.</h2>
-          </Reveal>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {/* Main Industry Card */}
-          <div className="md:col-span-2 lg:col-span-3 glass-card-v2 p-10 rounded-3xl flex flex-col justify-between group overflow-hidden relative min-h-[400px]">
-            <div className="absolute top-[-10%] right-[-10%] opacity-[0.03] group-hover:opacity-[0.06] transition-opacity text-primary">
-              <Droplet size={300} strokeWidth={1} />
-            </div>
-            <div>
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8 border border-primary/20">
-                <Droplet size={24} />
-              </div>
-              <h3 className="text-3xl font-black text-dark mb-4 uppercase">Plumbing</h3>
-              <p className="text-slate-500 font-light leading-relaxed max-w-xs">
-                Emergency dispatch templates and AI qualification for high-stress repairs.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black text-primary tracking-widest uppercase cursor-pointer">
-              Learn More <ArrowRight size={14} />
-            </div>
-          </div>
-
-          {/* Electrician Card */}
-          <div className="md:col-span-2 lg:col-span-3 glass-card-v2 p-10 rounded-3xl flex flex-col justify-between group min-h-[400px]">
-            <div>
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-8 border border-primary/20">
-                <Power size={24} />
-              </div>
-              <h3 className="text-3xl font-black text-dark mb-4 uppercase">Electrical</h3>
-              <p className="text-slate-500 font-light leading-relaxed max-w-xs">
-                Showcase your master services with high-conversion project grids and instant quoting.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-[10px] font-black text-primary tracking-widest uppercase cursor-pointer">
-              Learn More <ArrowRight size={14} />
-            </div>
-          </div>
-
-          {/* Landscaping Card */}
-          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group">
-            <Landscaping className="text-primary mb-6" size={32} strokeWidth={1.5} />
-            <h4 className="text-xl font-black text-dark mb-3 uppercase tracking-tight">Landscaping</h4>
-            <p className="text-sm text-slate-500 font-light mb-6">Visual galleries that turn browsing into bookings.</p>
-            <div className="h-[1px] w-full bg-slate-100 group-hover:bg-primary/20 transition-colors" />
-          </div>
-
-          {/* HVAC Card */}
-          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group">
-            <Thermometer className="text-primary mb-6" size={32} strokeWidth={1.5} />
-            <h4 className="text-xl font-black text-dark mb-3 uppercase tracking-tight">HVAC</h4>
-            <p className="text-sm text-slate-500 font-light mb-6">Maintenance plans and emergency AI support agents.</p>
-            <div className="h-[1px] w-full bg-slate-100 group-hover:bg-primary/20 transition-colors" />
-          </div>
-
-          {/* Infrastructure Card */}
-          <div className="md:col-span-2 glass-card-v2 p-8 rounded-3xl group flex flex-col justify-center items-center text-center bg-slate-50/50 border-dashed border-slate-300">
-            <Cpu className="text-slate-400 mb-6" size={32} strokeWidth={1.5} />
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Infrastructure</span>
-            <h4 className="text-md font-black text-dark uppercase tracking-widest leading-none">Built with <br />Antigravity</h4>
-          </div>
-        </div>
       </section>
 
-      {/* Pricing Bento Section */}
-      <section id="pricing" className="relative z-10 py-32 px-6 max-w-7xl mx-auto">
+      {/* ─────────────────── SERVICE BENTO ─────────────────── */}
+      <section id="services" className="py-32 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20">
           <Reveal>
-            <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-4 block">02 // Pricing</span>
-            <h2 className="text-5xl md:text-7xl font-black text-dark tracking-tighter italic opacity-10">INVESTMENT</h2>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Precision-engineered for pros</h2>
+            <p className="text-white/40 max-w-xl mx-auto">We don&apos;t just build websites. We build conversion engines tailored for high-performing trade businesses.</p>
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Landing Page Tier */}
-          <div className="glass-card-v2 p-12 rounded-3xl flex flex-col justify-between min-h-[500px]">
-            <div>
-              <div className="text-primary mb-8"><Layout size={32} strokeWidth={1.5} /></div>
-              <h3 className="text-[12px] font-bold text-slate-400 uppercase tracking-[0.4em] mb-6">Landing Page</h3>
-              <div className="flex items-baseline gap-2 mb-10">
-                <span className="text-6xl font-black text-dark tracking-tighter">$100</span>
-                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">/ flat</span>
-              </div>
-              <ul className="space-y-4 text-xs font-medium text-slate-500">
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Premium Design</li>
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Vercel Hosting</li>
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Mobile Optimized</li>
-              </ul>
-            </div>
-            <button className="w-full py-5 rounded-xl border border-slate-200 text-[10px] font-black uppercase tracking-widest text-dark hover:bg-slate-50 transition-colors">
-              Initialize Project
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div className="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ServiceCard 
+              icon={Smartphone} 
+              title="Mobile First" 
+              desc="Optimized for homeowners browsing on their phone between tasks. Fast, clean, and high-converting."
+            />
+            <ServiceCard 
+              icon={Bot} 
+              title="AI Response" 
+              desc="Handle enquiries at 2am. Our custom AI bots answer questions and capture lead details instantly."
+            />
+            <ServiceCard 
+              icon={Globe} 
+              title="Local SEO" 
+              desc="Dominate your service area. Every page is built with local search patterns baked into the code."
+            />
+            <ServiceCard 
+              icon={Zap} 
+              title="Ultra Fast" 
+              desc="Deploying on edge networks means your site loads in under 1s. No more bounced leads."
+            />
           </div>
-
-          {/* Vanguard Bundle Tier */}
-          <div className="shimmer-border rounded-3xl p-12 flex flex-col justify-between min-h-[500px] bg-slate-50/50 relative shadow-xl shadow-primary/5">
-            <div className="absolute top-0 right-0 px-4 py-1.5 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-bl-xl">Best Value</div>
-            <div>
-              <div className="text-primary mb-8 flex gap-2"><Layout size={24} strokeWidth={1.5} /> <span className="opacity-50">+</span> <Bot size={24} strokeWidth={1.5} /></div>
-              <h3 className="text-[12px] font-bold text-slate-500 uppercase tracking-[0.4em] mb-6">Vanguard Bundle</h3>
-              <div className="flex items-baseline gap-2 mb-10">
-                <span className="text-6xl font-black text-dark tracking-tighter text-gradient">$150</span>
-                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">/ total</span>
-              </div>
-              <ul className="space-y-4 text-xs font-medium text-slate-600">
-                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Website + AI Agent</li>
-                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Lead Auto-Qualification</li>
-                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> SEO Integration</li>
-                <li className="flex items-center gap-3"><Zap size={14} className="text-primary" /> Priority Activation</li>
-              </ul>
+          
+          <Reveal delay={0.2} className="md:col-span-4 bento-card rounded-2xl p-10 flex flex-col justify-end group overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-8 text-primary/20 group-hover:text-primary transition-colors">
+              <Layers size={80} />
             </div>
-            <button className="w-full py-5 rounded-xl bg-dark text-white text-[10px] font-black uppercase tracking-widest hover:bg-primary transition-colors">
-              Activate Bundle
-            </button>
-          </div>
-
-          {/* AI Chatbot Tier */}
-          <div className="glass-card-v2 p-12 rounded-3xl flex flex-col justify-between min-h-[500px]">
-            <div>
-              <div className="text-primary mb-8"><Bot size={32} strokeWidth={1.5} /></div>
-              <h3 className="text-[12px] font-bold text-slate-400 uppercase tracking-[0.4em] mb-6">AI Chatbot</h3>
-              <div className="flex items-baseline gap-2 mb-10">
-                <span className="text-6xl font-black text-dark tracking-tighter">$50</span>
-                <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">/ bot</span>
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold mb-4">Ready for anything</h3>
+              <p className="text-white/40 text-sm leading-relaxed mb-6">Whether you&apos;re a one-man show or a growing fleet, our infrastructure scales with your bookings.</p>
+              <div className="flex items-center gap-2 text-primary font-bold text-sm cursor-pointer group-hover:gap-3 transition-all">
+                Learn more <ArrowRight size={16} />
               </div>
-              <ul className="space-y-4 text-xs font-medium text-slate-500">
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Custom Knowledge Base</li>
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Lead Capture Logic</li>
-                <li className="flex items-center gap-3"><Shield size={14} className="text-primary" /> Easy CRM Integration</li>
-              </ul>
             </div>
-            <button className="w-full py-5 rounded-xl border border-slate-200 text-[10px] font-black uppercase tracking-widest text-dark hover:bg-slate-50 transition-colors">
-              Deploy Agent
-            </button>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Trust & Stats Footer */}
-      <footer className="relative z-10 pt-32 pb-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-          <div className="md:col-span-2">
-            <h4 className="text-2xl font-black text-dark mb-6 uppercase tracking-widest">AI Vanguard</h4>
-            <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xs uppercase tracking-tight">
-              Scaling service businesses with sovereign digital infrastructure. Built for those who build the world.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <span className="text-[10px] font-bold text-dark uppercase tracking-[0.4em] mb-2">Systems</span>
-            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
-              <Globe size={12} strokeWidth={2} /> Hosted on Vercel
-            </div>
-            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
-              <Power size={12} strokeWidth={2} /> Powered by Edge
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <span className="text-[10px] font-bold text-dark uppercase tracking-[0.4em] mb-2">Status</span>
-            <div className="flex items-center gap-2 text-primary text-[10px] font-bold uppercase tracking-widest">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> All Systems Online
-            </div>
-            <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
-              <Clock size={12} strokeWidth={2} /> Global Support 24/7
-            </div>
-          </div>
+      {/* ─────────────────── PRICING BENTO ─────────────────── */}
+      <section id="pricing" className="py-32 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-20">
+          <Reveal>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Simple, transparent, trade-friendly</h2>
+            <p className="text-white/40 max-w-xl mx-auto">No recurring agency fees. Just world-class tools to grow your business.</p>
+          </Reveal>
         </div>
 
-        <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
-          <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em]">© 2026 AI Vanguard // Elite Tech for Industry</span>
-          <div className="flex gap-8">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] hover:text-primary cursor-pointer transition-colors">Privacy</span>
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.5em] hover:text-primary cursor-pointer transition-colors">Terms</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <PricingCard 
+            title="Landing Pages" 
+            price="100" 
+            features={["Custom Mobile Design", "local SEO Optimization", "Lead Capture Form", "Domain Connection"]}
+          />
+          <PricingCard 
+            title="Vanguard Bundle" 
+            price="150" 
+            isFeatured={true}
+            features={["Everything in Landing", "Custom AI Chatbot", "Priority Support", "Performance Dashboard"]}
+          />
+          <PricingCard 
+            title="AI Chatbots" 
+            price="50" 
+            features={["Custom Training", "24/7 Response", "Lead Qualification", "Email Notifications"]}
+          />
+        </div>
+      </section>
+
+      {/* ─────────────────── FOOTER ─────────────────── */}
+      <footer className="py-20 px-6 border-t border-white/5 glass-dark overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-10">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-white font-black text-xs uppercase">AV</span>
+            </div>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase">AI Vanguard</span>
           </div>
+          
+          <div className="flex gap-10 text-[11px] font-bold tracking-widest text-white/40 uppercase">
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <a href="#" className="hover:text-white transition-colors">Support</a>
+          </div>
+
+          <p className="text-[11px] text-white/30 tracking-widest uppercase">
+            &copy; 2026 AI Vanguard. Precision Built.
+          </p>
         </div>
       </footer>
     </main>
