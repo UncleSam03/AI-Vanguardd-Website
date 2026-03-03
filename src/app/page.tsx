@@ -396,7 +396,13 @@ export default function LandingPage() {
       <footer className="border-t border-brand-border py-12 px-6 relative z-10 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-brand-blue" />
+            <Image 
+              src="/Logo.jpg" 
+              alt="AI Vanguard Logo" 
+              width={24} 
+              height={24} 
+              className="rounded-md shadow-sm"
+            />
             <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
           <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} AI Vanguard. All rights reserved.</p>
