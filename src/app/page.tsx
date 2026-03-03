@@ -15,6 +15,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -163,9 +164,13 @@ export default function LandingPage() {
       <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-blue flex items-center justify-center shadow-sm">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
+            <Image 
+              src="/Logo.jpg" 
+              alt="AI Vanguard Logo" 
+              width={32} 
+              height={32} 
+              className="rounded-lg shadow-sm"
+            />
             <span className="font-bold text-xl tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
