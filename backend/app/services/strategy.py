@@ -15,7 +15,6 @@ class StrategyService:
         
         Client Details:
         - Primary Goal: {data.primary_ai_goal} (Focused on Chatbots and Landing Pages)
-        - Tech Stack: {', '.join(data.tech_stack)}
         - Preferred Comms: {data.comm_preference}
 
         Your strategy should focus on how an AI Chatbot can handle emergency routing or how a new Landing Page can increase conversion for their specific trade.

@@ -5,7 +5,6 @@ class WizardData(BaseModel):
     business_name: str
     industry: str
     primary_ai_goal: str
-    tech_stack: List[str]
     comm_preference: str
 
 class StrategySummary(BaseModel):

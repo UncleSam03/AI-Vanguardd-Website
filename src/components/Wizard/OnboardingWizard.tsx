@@ -10,7 +10,6 @@ import {
     Rocket,
     Building2,
     Target,
-    Cpu,
     MessageSquare,
     Sparkles,
     Loader2,
@@ -26,7 +25,6 @@ const steps = [
     { id: 'welcome', title: 'Welcome', icon: Rocket },
     { id: 'business', title: 'Business', icon: Building2 },
     { id: 'goal', title: 'Strategy', icon: Target },
-    { id: 'tech', title: 'Stack', icon: Cpu },
     { id: 'comms', title: 'Comms', icon: MessageSquare },
 ];
 
@@ -36,7 +34,6 @@ const GOALS = [
     { id: 'landing_page', title: 'Landing Page', desc: 'High-converting, professional landing page built for your trade.' },
     { id: 'full_onboarding', title: 'Full AI Onboarding', desc: 'Combined Chatbot and Landing Page setup for maximum growth.' },
 ];
-const TECH_TOOLS = ['HubSpot', 'QuickBooks', 'Shopify', 'Salesforce', 'WordPress', 'Gmail', 'Slack', 'Excel'];
 
 export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
     const [currentStep, setCurrentStep] = useState(0);
@@ -46,21 +43,11 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
         business_name: '',
         industry: 'Plumbing',
         primary_ai_goal: 'chatbot',
-        tech_stack: [] as string[],
         comm_preference: 'Slack',
     });
 
     const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
     const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
-
-    const toggleTech = (tool: string) => {
-        setFormData(prev => ({
-            ...prev,
-            tech_stack: prev.tech_stack.includes(tool)
-                ? prev.tech_stack.filter(t => t !== tool)
-                : [...prev.tech_stack, tool]
-        }));
-    };
 
     const handleSubmit = async () => {
         setLoading(true);
@@ -228,33 +215,6 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
 
                                     {currentStep === 3 && (
                                         <motion.div
-                                            key="step3"
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
-                                            className="space-y-8"
-                                        >
-                                            <h2 className="text-2xl font-bold text-brand-dark">Current Tech Stack</h2>
-                                            <p className="text-slate-500 text-sm">Select the tools you use daily so we can plan integrations.</p>
-                                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                                {TECH_TOOLS.map((tool) => (
-                                                    <button
-                                                        key={tool}
-                                                        onClick={() => toggleTech(tool)}
-                                                        className={`px-4 py-3 rounded-xl text-center font-semibold text-sm transition-all border ${formData.tech_stack.includes(tool)
-                                                            ? 'bg-brand-dark text-white border-brand-dark shadow-md'
-                                                            : 'bg-white text-slate-500 border-slate-100 hover:border-brand-cyan'
-                                                            }`}
-                                                    >
-                                                        {tool}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </motion.div>
-                                    )}
-
-                                    {currentStep === 4 && (
-                                        <motion.div
                                             key="step4"
                                             initial={{ opacity: 0, x: 20 }}
                                             animate={{ opacity: 1, x: 0 }}
@@ -279,7 +239,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         </motion.div>
                                     )}
 
-                                    {currentStep === 5 && strategy && (
+                                    {currentStep === 4 && strategy && (
                                         <motion.div
                                             key="thankyou"
                                             initial={{ opacity: 0, scale: 0.9 }}
@@ -318,7 +278,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                 </AnimatePresence>
                             </div>
 
-                            {currentStep < 5 && (
+                            {currentStep < 4 && (
                                 <div className="pt-12 flex items-center justify-between">
                                     <button
                                         onClick={prevStep}
