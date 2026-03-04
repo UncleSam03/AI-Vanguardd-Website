@@ -1,13 +1,18 @@
-from .schemas import LeadIntake, ProjectCategorization, WizardData, StrategySummary
-from .services.intelligence import IntelligenceService
-from .services.slack import SlackService
-from .services.notion import NotionService
-from .services.strategy import StrategyService
-from .routers import payoneer_mock
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import os
+
+from app.schemas import IntakeData, CategorizedProject, WizardData, QuotationSummary
+from app.services.intelligence import IntelligenceService
+from app.services.slack import SlackService
+from app.services.notion import NotionService
+from app.services.strategy import StrategyService
+from app.routers import payoneer_mock
 
 load_dotenv()
 
-app = FastAPI(title="AI Vanguard Onboarding API")
+app = FastAPI(title="AI Vanguard Automations")
 app.include_router(payoneer_mock.router)
 
 intelligence_service = IntelligenceService()
@@ -43,9 +48,13 @@ async def lead_intake(lead: LeadIntake):
     
     return result
 
-@app.post("/api/strategy", response_model=StrategySummary)
+@app.post("/api/strategy", response_model=QuotationSummary)
 async def generate_strategy(data: WizardData):
-    return await strategy_service.generate_strategy(data)
+    """
+    Generates an automated quotation based on wizard inputs and simulates sending an email.
+    """
+    service = StrategyService()
+    return await service.generate_strategy(data)
 
 if __name__ == "__main__":
     import uvicorn

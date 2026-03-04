@@ -1,37 +1,56 @@
 import google.generativeai as genai
+from typing import Optional
 import os
 import json
-from .schemas import WizardData, StrategySummary
+
+from app.schemas import WizardData, QuotationSummary
 
 class StrategyService:
     def __init__(self):
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
         self.model = genai.GenerativeModel('gemini-1.5-flash')
 
-    async def generate_strategy(self, data: WizardData) -> StrategySummary:
+    async def generate_strategy(self, data: WizardData) -> QuotationSummary:
         prompt = f"""
-        Act as a senior AI Consultant at AI Vanguard, specializing in AI for the trades (Plumbing, Electrical, HVAC, Landscaping). 
-        Create an 'Initial AI Strategy Summary' for a {data.industry} business named {data.business_name}.
-        
+        You are an elite AI Sales Engineer for AI Vanguard.
+        A new potential client just completed our onboarding wizard.
+        Generate a professional, high-converting quotation summary for this client.
+
         Client Details:
+        - Business Name: {data.business_name}
+        - Industry: {data.industry}
         - Primary Goal: {data.primary_ai_goal} (Focused on Chatbots and Landing Pages)
-        - Preferred Comms: {data.comm_preference}
+        - Contact Email: {data.email}
 
-        Your strategy should focus on how an AI Chatbot can handle emergency routing or how a new Landing Page can increase conversion for their specific trade.
+        Your quotation should provide a realistic price estimate based on the goal:
+        - Chatbots are typically $1,500 - $3,000.
+        - Landing Pages are typically $2,000 - $4,500.
+        - Full Onboarding (Both) is $3,500 - $7,000.
+        Adjust the terminology appropriately for their industry ({data.industry}).
 
-        Return a JSON object with:
-        - opportunities (3 specific service-based opportunities, e.g., '24/7 HVAC Emergency Dispatch Bot')
-        - efficiency_gains (Expected impact on lead conversion or response time)
-        - recommended_roadmap (3 immediate steps to launch their chatbot or site)
-        - summary_text (A professional 2-sentence pitch for their AI transformation)
-
-        Return ONLY the JSON.
+        Return a JSON object matching this schema exactly:
+        {{
+            "summary_text": "A brief 2-sentence welcoming pitch explaining the ROI of this project for their specific trade.",
+            "estimated_cost": "A price range, e.g., '$2,500 - $4,000'",
+            "estimated_timeline": "A rough timeline, e.g., '2-3 Weeks'",
+            "services_included": ["Bullet 1", "Bullet 2", "Bullet 3", "Bullet 4"]
+        }}
         """
         
         response = self.model.generate_content(prompt)
-        content = response.text.strip()
-        if content.startswith("```json"):
-            content = content[7:-3].strip()
+        response_text = response.text
+        # Optional: handle if Gemini wraps it in ```json ... ```
+        if response_text.startswith("```json"):
+            response_text = response_text.replace("```json\n", "").replace("\n```", "")
         
-        result_data = json.loads(content)
-        return StrategySummary(**result_data)
+        result_dict = json.loads(response_text)
+        
+        # --- SIMULATE AUTOMATED EMAIL SENDING ---
+        print("\n" + "="*50)
+        print(f"📧 [SIMULATED NOTIFICATION] AUTOMATED QUOTE SENT")
+        print(f"To: {data.email}")
+        print(f"Subject: Your AI Project Quotation - AI Vanguard")
+        print(f"Cost: {result_dict.get('estimated_cost')}")
+        print("="*50 + "\n")
+        
+        return QuotationSummary(**result_dict)

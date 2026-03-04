@@ -10,7 +10,7 @@ import {
     Rocket,
     Building2,
     Target,
-    MessageSquare,
+    Mail,
     Sparkles,
     Loader2,
     ArrowRight
@@ -25,7 +25,7 @@ const steps = [
     { id: 'welcome', title: 'Welcome', icon: Rocket },
     { id: 'business', title: 'Business', icon: Building2 },
     { id: 'goal', title: 'Strategy', icon: Target },
-    { id: 'comms', title: 'Comms', icon: MessageSquare },
+    { id: 'email', title: 'Quote', icon: Mail },
 ];
 
 const INDUSTRIES = ['Plumbing', 'Electrical', 'Landscaping', 'HVAC', 'Home Services', 'Construction', 'Other'];
@@ -43,7 +43,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
         business_name: '',
         industry: 'Plumbing',
         primary_ai_goal: 'chatbot',
-        comm_preference: 'Slack',
+        email: '',
     });
 
     const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -63,7 +63,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                 setCurrentStep(steps.length); // Final "Thank You" step
             }
         } catch (error) {
-            console.error('Error generating strategy:', error);
+            console.error('Error generating quote:', error);
         } finally {
             setLoading(false);
         }
@@ -221,20 +221,17 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                             exit={{ opacity: 0, x: -20 }}
                                             className="space-y-8"
                                         >
-                                            <h2 className="text-2xl font-bold text-brand-dark">Preferred Channel</h2>
-                                            <div className="flex gap-4">
-                                                {['Slack', 'Email'].map((pref) => (
-                                                    <button
-                                                        key={pref}
-                                                        onClick={() => setFormData({ ...formData, comm_preference: pref })}
-                                                        className={`flex-1 py-10 rounded-3xl border-2 font-bold text-xl transition-all ${formData.comm_preference === pref
-                                                            ? 'bg-brand-dark text-white border-brand-dark shadow-xl'
-                                                            : 'bg-white text-slate-400 border-slate-100'
-                                                            }`}
-                                                    >
-                                                        {pref}
-                                                    </button>
-                                                ))}
+                                            <h2 className="text-2xl font-bold text-brand-dark">Where should we send your quote?</h2>
+                                            <p className="text-slate-500 text-sm">We'll instantly generate and email a customized project quotation based on your choices.</p>
+                                            <div className="space-y-4">
+                                                <input
+                                                    type="email"
+                                                    value={formData.email}
+                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                                    className="w-full px-6 py-6 rounded-3xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-brand-dark focus:ring-4 focus:ring-brand-cyan/10 transition-all outline-none text-lg font-medium"
+                                                    placeholder="founder@company.com"
+                                                    required
+                                                />
                                             </div>
                                         </motion.div>
                                     )}
@@ -247,27 +244,34 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                             className="space-y-8"
                                         >
                                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/10 text-brand-cyan text-xs font-bold uppercase tracking-wider">
-                                                <Sparkles className="w-3 h-3" /> Strategy Ready
+                                                <Sparkles className="w-3 h-3" /> Quote Generated & Emailed
                                             </div>
-                                            <h2 className="text-4xl font-bold text-brand-dark tracking-tight">Welcome to the Vanguard, {formData.business_name}.</h2>
+                                            <h2 className="text-4xl font-bold text-brand-dark tracking-tight">Your project is mapped out, {formData.business_name}.</h2>
                                             <p className="text-slate-600 italic">"{strategy.summary_text}"</p>
 
                                             <div className="p-8 rounded-4xl bg-slate-900 text-white space-y-6">
-                                                <h3 className="font-bold text-brand-cyan flex items-center gap-2">
-                                                    <Target className="w-5 h-5" /> Top Opportunities
+                                                <div className="flex justify-between items-end pb-4 border-b border-slate-800">
+                                                    <div>
+                                                        <p className="text-brand-cyan text-sm font-bold uppercase tracking-widest mb-1">Estimated Investment</p>
+                                                        <p className="text-4xl font-black">{strategy.estimated_cost}</p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Timeline</p>
+                                                        <p className="font-semibold">{strategy.estimated_timeline}</p>
+                                                    </div>
+                                                </div>
+
+                                                <h3 className="font-bold text-brand-cyan flex items-center gap-2 pt-2">
+                                                    <Target className="w-5 h-5" /> What's Included
                                                 </h3>
                                                 <ul className="space-y-3">
-                                                    {strategy.opportunities.map((o: string, i: number) => (
+                                                    {strategy.services_included.map((service: string, i: number) => (
                                                         <li key={i} className="flex gap-3 text-sm">
-                                                            <span className="text-brand-cyan font-bold">{i + 1}.</span>
-                                                            <span className="text-slate-300">{o}</span>
+                                                            <Check className="w-4 h-4 text-brand-cyan shrink-0" />
+                                                            <span className="text-slate-300">{service}</span>
                                                         </li>
                                                     ))}
                                                 </ul>
-                                                <div className="pt-4 border-t border-slate-800">
-                                                    <p className="text-xs text-slate-400 uppercase font-black tracking-widest mb-2">Impact</p>
-                                                    <p className="text-lg font-medium">{strategy.efficiency_gains}</p>
-                                                </div>
                                             </div>
 
                                             <button onClick={onClose} className="w-full py-5 rounded-2xl bg-brand-dark text-white font-bold text-lg hover:shadow-2xl transition-all">
@@ -291,11 +295,11 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                     {currentStep === (steps.length - 1) ? (
                                         <button
                                             onClick={handleSubmit}
-                                            disabled={loading || !formData.business_name}
+                                            disabled={loading || !formData.business_name || !formData.email.includes('@')}
                                             className="px-10 py-5 rounded-2xl bg-brand-dark text-white font-bold shadow-xl hover:shadow-2xl hover:bg-slate-800 transition-all flex items-center gap-2 disabled:opacity-50"
                                         >
                                             {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Rocket className="w-6 h-6" />}
-                                            Generate Strategy
+                                            Generate Quote
                                         </button>
                                     ) : (
                                         <button
