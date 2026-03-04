@@ -10,19 +10,21 @@ class StrategyService:
 
     async def generate_strategy(self, data: WizardData) -> StrategySummary:
         prompt = f"""
-        Act as a senior AI Consultant at AI Vanguard. 
-        Create an 'Initial AI Strategy Summary' for the following client:
-        - Business Name: {data.business_name}
-        - Industry: {data.industry}
-        - Primary AI Goal: {data.primary_ai_goal}
+        Act as a senior AI Consultant at AI Vanguard, specializing in AI for the trades (Plumbing, Electrical, HVAC, Landscaping). 
+        Create an 'Initial AI Strategy Summary' for a {data.industry} business named {data.business_name}.
+        
+        Client Details:
+        - Primary Goal: {data.primary_ai_goal} (Focused on Chatbots and Landing Pages)
         - Tech Stack: {', '.join(data.tech_stack)}
-        - Communication Preference: {data.comm_preference}
+        - Preferred Comms: {data.comm_preference}
+
+        Your strategy should focus on how an AI Chatbot can handle emergency routing or how a new Landing Page can increase conversion for their specific trade.
 
         Return a JSON object with:
-        - opportunities (List of 3 specific AI opportunities for their industry and goal)
-        - efficiency_gains (A sentence describing potential time or cost savings)
-        - recommended_roadmap (List of 3 immediate next steps)
-        - summary_text (A 2-3 sentence professional value proposition)
+        - opportunities (3 specific service-based opportunities, e.g., '24/7 HVAC Emergency Dispatch Bot')
+        - efficiency_gains (Expected impact on lead conversion or response time)
+        - recommended_roadmap (3 immediate steps to launch their chatbot or site)
+        - summary_text (A professional 2-sentence pitch for their AI transformation)
 
         Return ONLY the JSON.
         """

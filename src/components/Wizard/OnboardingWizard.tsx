@@ -30,11 +30,11 @@ const steps = [
     { id: 'comms', title: 'Comms', icon: MessageSquare },
 ];
 
-const INDUSTRIES = ['Real Estate', 'Healthcare', 'E-commerce', 'Home Services', 'Finance', 'Education', 'Technology', 'Other'];
+const INDUSTRIES = ['Plumbing', 'Electrical', 'Landscaping', 'HVAC', 'Home Services', 'Construction', 'Other'];
 const GOALS = [
-    { id: 'lead_gen', title: 'Lead Generation', desc: 'Find and qualify more customers automatically.' },
-    { id: 'workflow', title: 'Internal Workflow', desc: 'Automate repetitive tasks and documentation.' },
-    { id: 'support', title: 'Customer Support', desc: '24/7 AI-driven assistance for your clients.' },
+    { id: 'chatbot', title: 'AI Chatbot', desc: '24/7 emergency routing, automated quoting, and lead capture.' },
+    { id: 'landing_page', title: 'Landing Page', desc: 'High-converting, professional landing page built for your trade.' },
+    { id: 'full_onboarding', title: 'Full AI Onboarding', desc: 'Combined Chatbot and Landing Page setup for maximum growth.' },
 ];
 const TECH_TOOLS = ['HubSpot', 'QuickBooks', 'Shopify', 'Salesforce', 'WordPress', 'Gmail', 'Slack', 'Excel'];
 
@@ -44,8 +44,8 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
     const [strategy, setStrategy] = useState<any>(null);
     const [formData, setFormData] = useState({
         business_name: '',
-        industry: 'Real Estate',
-        primary_ai_goal: 'lead_gen',
+        industry: 'Plumbing',
+        primary_ai_goal: 'chatbot',
         tech_stack: [] as string[],
         comm_preference: 'Slack',
     });
