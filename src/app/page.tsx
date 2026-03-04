@@ -1,24 +1,27 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
-import { 
-  Wrench, 
-  Zap, 
-  Leaf, 
-  Thermometer, 
-  ArrowRight, 
-  CheckCircle2, 
-  Bot, 
-  Globe, 
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  Wrench,
+  Zap,
+  Leaf,
+  Thermometer,
+  ArrowRight,
+  CheckCircle2,
+  Bot,
+  Globe,
   Sparkles,
   ShieldCheck,
   Instagram,
   Facebook,
-  Linkedin
+  Linkedin,
+  Menu,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import IntakeForm from '@/components/IntakeForm';
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,41 +50,41 @@ const ParticleBackground = () => {
     const numParticles = 700;
 
     const isInsideLogo = (x: number, y: number) => {
-        const thickness = 14;
-        
-        // V shape
-        const distLeft = Math.abs(x - y + 80) / Math.SQRT2;
-        const distRight = Math.abs(x + y - 80) / Math.SQRT2;
-        
-        const inLeftArm = distLeft < thickness && x > -110 && x < 0 && y > -30 && y < 90;
-        const inRightArm = distRight < thickness && x > 0 && x < 110 && y > -30 && y < 90;
-        
-        // Towers
-        const inCenterTower = x > -12 && x < 12 && y > -100 && y < 50;
-        const inLeftTower = x > -28 && x < -12 && y > -50 && y < 30;
-        const inRightTower = x > 12 && x < 28 && y > -70 && y < 40;
-        const inFarRightTower = x > 28 && x < 42 && y > -30 && y < 20;
-        const inFarLeftTower = x > -42 && x < -28 && y > -10 && y < 10;
+      const thickness = 14;
 
-        return inLeftArm || inRightArm || inCenterTower || inLeftTower || inRightTower || inFarRightTower || inFarLeftTower;
+      // V shape
+      const distLeft = Math.abs(x - y + 80) / Math.SQRT2;
+      const distRight = Math.abs(x + y - 80) / Math.SQRT2;
+
+      const inLeftArm = distLeft < thickness && x > -110 && x < 0 && y > -30 && y < 90;
+      const inRightArm = distRight < thickness && x > 0 && x < 110 && y > -30 && y < 90;
+
+      // Towers
+      const inCenterTower = x > -12 && x < 12 && y > -100 && y < 50;
+      const inLeftTower = x > -28 && x < -12 && y > -50 && y < 30;
+      const inRightTower = x > 12 && x < 28 && y > -70 && y < 40;
+      const inFarRightTower = x > 28 && x < 42 && y > -30 && y < 20;
+      const inFarLeftTower = x > -42 && x < -28 && y > -10 && y < 10;
+
+      return inLeftArm || inRightArm || inCenterTower || inLeftTower || inRightTower || inFarRightTower || inFarLeftTower;
     };
 
     for (let i = 0; i < numParticles; i++) {
-       let tx = 0, ty = 0;
-       while(true) {
-          tx = (Math.random() - 0.5) * 240;
-          ty = (Math.random() - 0.5) * 240;
-          if (isInsideLogo(tx, ty)) break;
-       }
-       
-       particles.push({
-         x: Math.random() * width,
-         y: Math.random() * height,
-         targetX: tx,
-         targetY: ty,
-         angle: Math.random() * Math.PI * 2,
-         radius: 1 + Math.random() * 1.5
-       });
+      let tx = 0, ty = 0;
+      while (true) {
+        tx = (Math.random() - 0.5) * 240;
+        ty = (Math.random() - 0.5) * 240;
+        if (isInsideLogo(tx, ty)) break;
+      }
+
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        targetX: tx,
+        targetY: ty,
+        angle: Math.random() * Math.PI * 2,
+        radius: 1 + Math.random() * 1.5
+      });
     }
 
     let animationFrameId: number;
@@ -94,25 +97,25 @@ const ParticleBackground = () => {
       ctx.fillStyle = '#0891B2'; // Cyan
 
       const centerX = width / 2;
-      const centerY = height / 2 - 50; 
-      const scale = Math.min(width, height) / 500; 
+      const centerY = height / 2 - 50;
+      const scale = Math.min(width, height) / 500;
 
       particles.forEach(p => {
-         const screenTargetX = centerX + p.targetX * scale;
-         const screenTargetY = centerY + p.targetY * scale;
+        const screenTargetX = centerX + p.targetX * scale;
+        const screenTargetY = centerY + p.targetY * scale;
 
-         const floatX = Math.sin(time + p.angle) * 15;
-         const floatY = Math.cos(time + p.angle) * 15;
+        const floatX = Math.sin(time + p.angle) * 15;
+        const floatY = Math.cos(time + p.angle) * 15;
 
-         const finalTargetX = screenTargetX + floatX;
-         const finalTargetY = screenTargetY + floatY;
+        const finalTargetX = screenTargetX + floatX;
+        const finalTargetY = screenTargetY + floatY;
 
-         p.x += (finalTargetX - p.x) * 0.04;
-         p.y += (finalTargetY - p.y) * 0.04;
+        p.x += (finalTargetX - p.x) * 0.04;
+        p.y += (finalTargetY - p.y) * 0.04;
 
-         ctx.beginPath();
-         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-         ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
       });
 
       animationFrameId = requestAnimationFrame(render);
@@ -136,8 +139,8 @@ const ParticleBackground = () => {
   }, []);
 
   return (
-    <canvas 
-      ref={canvasRef} 
+    <canvas
+      ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0 opacity-40"
     />
   );
@@ -159,34 +162,96 @@ const STAGGER_CHILDREN_VARIANTS = {
 };
 
 export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isIntakeOpen, setIsIntakeOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-brand-light text-brand-dark overflow-hidden selection:bg-brand-cyan/30 relative">
       <ParticleBackground />
-      
+      <IntakeForm isOpen={isIntakeOpen} onClose={() => setIsIntakeOpen(false)} />
+
       {/* Navigation */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-brand-border">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Image 
-              src="/Logo.jpg" 
-              alt="AI Vanguard Logo" 
-              width={32} 
-              height={32} 
+            <Image
+              src="/Logo.jpg"
+              alt="AI Vanguard Logo"
+              width={32}
+              height={32}
               className="rounded-lg shadow-sm"
             />
             <span className="font-bold text-xl tracking-tight text-brand-dark">AI Vanguard</span>
           </div>
+
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <Link href="#services" className="hover:text-brand-blue transition-colors">Services</Link>
             <Link href="#pricing" className="hover:text-brand-blue transition-colors">Pricing</Link>
             <Link href="#faq" className="hover:text-brand-blue transition-colors">FAQ</Link>
           </nav>
+
           <div className="flex items-center gap-4">
-            <button className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm">
-              Get Started
+            <div className="hidden md:block">
+              <button
+                onClick={() => setIsIntakeOpen(true)}
+                className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm"
+              >
+                Get Started
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 text-slate-600 hover:text-brand-dark transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
+
+        {/* Mobile Nav Dropdown */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-brand-border bg-white overflow-hidden"
+            >
+              <div className="px-6 py-8 flex flex-col gap-6 font-medium text-slate-600">
+                <Link
+                  href="#services"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg hover:text-brand-blue transition-colors"
+                >
+                  Services
+                </Link>
+                <Link
+                  href="#pricing"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg hover:text-brand-blue transition-colors"
+                >
+                  Pricing
+                </Link>
+                <Link
+                  href="#faq"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="text-lg hover:text-brand-blue transition-colors"
+                >
+                  FAQ
+                </Link>
+                <button
+                  onClick={() => setIsIntakeOpen(true)}
+                  className="w-full py-4 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm"
+                >
+                  Get Started
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main className="pt-32 pb-24 px-6 relative z-10">
@@ -194,7 +259,7 @@ export default function LandingPage() {
         <section className="max-w-4xl mx-auto text-center mb-32 relative">
           {/* Background Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-blue/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
-          
+
           <motion.div
             initial="hidden"
             animate="show"
@@ -202,40 +267,40 @@ export default function LandingPage() {
             className="space-y-8"
           >
             <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-brand-border bg-white shadow-sm text-sm text-brand-blue mb-4">
-              <Image 
-                src="/Logo.jpg" 
-                alt="AI Vanguard" 
-                width={16} 
-                height={16} 
+              <Image
+                src="/Logo.jpg"
+                alt="AI Vanguard"
+                width={16}
+                height={16}
                 className="rounded-sm"
               />
               <span className="font-medium">Premium for Everyone</span>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               variants={FADE_UP_ANIMATION_VARIANTS}
-              className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1] text-brand-dark"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1] text-brand-dark"
             >
               Your Service Business,<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-blue">
                 Accelerated by AI.
               </span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               variants={FADE_UP_ANIMATION_VARIANTS}
-              className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed"
             >
               Professional landing pages and AI Agents for local service pros. Get a world-class digital presence while you stay on the job.
             </motion.p>
-            
-            <motion.div 
+
+            <motion.div
               variants={FADE_UP_ANIMATION_VARIANTS}
               className="flex items-center justify-center pt-4"
             >
-              <div className="relative group">
+              <div className="relative group w-full sm:w-auto">
                 <div className="absolute -inset-1 bg-gradient-to-r from-brand-cyan to-brand-blue rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 animate-pulse" />
-                <button className="relative px-10 py-4 rounded-xl bg-brand-dark text-white font-semibold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md overflow-hidden">
+                <button className="relative w-full sm:w-auto px-10 py-4 rounded-xl bg-brand-dark text-white font-semibold text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-md overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-brand-cyan/20 to-brand-blue/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                   How it Works
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -243,7 +308,7 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               variants={FADE_UP_ANIMATION_VARIANTS}
               className="flex items-center justify-center gap-6 pt-12 text-sm text-slate-500 font-medium"
             >
@@ -273,19 +338,19 @@ export default function LandingPage() {
               <p className="text-slate-600 max-w-2xl mx-auto">We understand your business. Our AI models are trained specifically for home service professionals to capture leads and book jobs.</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { icon: Wrench, title: "Plumbing", desc: "Emergency call routing & leak assessment bots." },
                 { icon: Zap, title: "Electrical", desc: "Quote generation & safety compliance checks." },
                 { icon: Leaf, title: "Landscaping", desc: "Seasonal service scheduling & visual portfolios." },
                 { icon: Thermometer, title: "HVAC", desc: "Maintenance reminders & diagnostic intake." }
               ].map((service, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   variants={FADE_UP_ANIMATION_VARIANTS}
                   className="p-6 rounded-2xl bg-white border border-brand-border shadow-sm hover:shadow-md hover:border-brand-cyan/30 transition-all group"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 lg:group-hover:scale-110 transition-transform">
                     <service.icon className="w-6 h-6 text-brand-blue" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2 text-brand-dark">{service.title}</h3>
@@ -310,7 +375,7 @@ export default function LandingPage() {
               <p className="text-slate-600 max-w-2xl mx-auto">No hidden fees. No complex tiers. Just the tools you need to grow.</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
               {/* Landing Page */}
               <motion.div variants={FADE_UP_ANIMATION_VARIANTS} className="p-8 rounded-3xl bg-white border border-brand-border shadow-sm flex flex-col h-full">
                 <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-6">
@@ -347,14 +412,14 @@ export default function LandingPage() {
                 <div className="relative p-[1px] rounded-3xl overflow-hidden shadow-lg h-full">
                   {/* Shimmer Border Effect */}
                   <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,#06B6D4_50%,transparent_100%)] bg-[length:200%_100%] animate-shimmer" />
-                  
+
                   <div className="relative p-8 rounded-[23px] bg-white flex flex-col h-full">
                     <div className="w-12 h-12 rounded-xl bg-brand-cyan/10 flex items-center justify-center mb-6">
-                      <Image 
-                        src="/Logo.jpg" 
-                        alt="Vanguard Bundle" 
-                        width={24} 
-                        height={24} 
+                      <Image
+                        src="/Logo.jpg"
+                        alt="Vanguard Bundle"
+                        width={24}
+                        height={24}
                         className="rounded-md shadow-sm"
                       />
                     </div>
@@ -390,14 +455,14 @@ export default function LandingPage() {
                   <span className="text-4xl font-bold text-brand-dark">$50</span>
                   <span className="text-slate-400 font-medium">/mo</span>
                 </div>
-                  <ul className="space-y-4 mb-8 flex-1">
-                    {['24/7 Lead Qualification', 'Automated Scheduling', 'Custom Knowledge Base', 'Instagram and Messenger Integration'].map((feature, i) => (
-                      <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
-                        <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                <ul className="space-y-4 mb-8 flex-1">
+                  {['24/7 Lead Qualification', 'Automated Scheduling', 'Custom Knowledge Base', 'Instagram and Messenger Integration'].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm text-slate-700 font-medium">
+                      <CheckCircle2 className="w-5 h-5 text-brand-cyan" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
                 <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
                   Get Started
                 </button>
@@ -409,18 +474,20 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-brand-border py-12 px-6 relative z-10 bg-white/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <Image 
-              src="/Logo.jpg" 
-              alt="AI Vanguard Logo" 
-              width={24} 
-              height={24} 
-              className="rounded-md shadow-sm"
-            />
-            <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex flex-col items-center md:items-start gap-4">
+            <div className="flex items-center gap-2">
+              <Image
+                src="/Logo.jpg"
+                alt="AI Vanguard Logo"
+                width={24}
+                height={24}
+                className="rounded-md shadow-sm"
+              />
+              <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
+            </div>
+            <p className="text-sm text-slate-500 font-medium text-center md:text-left">© {new Date().getFullYear()} AI Vanguard.<br className="sm:hidden" /> All rights reserved.</p>
           </div>
-          <p className="text-sm text-slate-500 font-medium">© {new Date().getFullYear()} AI Vanguard. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
               <Instagram className="w-5 h-5" />
@@ -428,18 +495,18 @@ export default function LandingPage() {
             <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
               <Facebook className="w-5 h-5" />
             </Link>
-            <Link 
-              href="https://wa.me/26775911908" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link
+              href="https://wa.me/26775911908"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-slate-500 hover:text-brand-blue transition-colors"
             >
-              <svg 
-                viewBox="0 0 24 24" 
+              <svg
+                viewBox="0 0 24 24"
                 className="w-5 h-5 fill-current"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
             </Link>
             <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
