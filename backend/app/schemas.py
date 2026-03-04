@@ -1,16 +1,15 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional, Dict
+from pydantic import BaseModel
+from typing import List, Optional
 
-class LeadIntake(BaseModel):
-    name: str
-    email: EmailStr
-    description: str
-    company_name: Optional[str] = None
+class WizardData(BaseModel):
+    business_name: str
+    industry: str
+    primary_ai_goal: str
+    tech_stack: List[str]
+    comm_preference: str
 
-class ProjectCategorization(BaseModel):
-    project_type: str
-    price_estimate: float
-    estimated_duration_weeks: int
-    suggested_slack_channel: str
-    welcome_video_script: str
-    tags: list[str]
+class StrategySummary(BaseModel):
+    opportunities: List[str]
+    efficiency_gains: str
+    recommended_roadmap: List[str]
+    summary_text: str

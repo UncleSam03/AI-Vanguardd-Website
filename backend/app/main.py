@@ -1,7 +1,8 @@
-from .schemas import LeadIntake, ProjectCategorization
+from .schemas import LeadIntake, ProjectCategorization, WizardData, StrategySummary
 from .services.intelligence import IntelligenceService
 from .services.slack import SlackService
 from .services.notion import NotionService
+from .services.strategy import StrategyService
 from .routers import payoneer_mock
 
 load_dotenv()
@@ -12,6 +13,7 @@ app.include_router(payoneer_mock.router)
 intelligence_service = IntelligenceService()
 slack_service = SlackService()
 notion_service = NotionService()
+strategy_service = StrategyService()
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,6 +42,10 @@ async def lead_intake(lead: LeadIntake):
     # In a full impl, we'd call the /mock/payoneer/v1/payment_requests endpoint here.
     
     return result
+
+@app.post("/api/strategy", response_model=StrategySummary)
+async def generate_strategy(data: WizardData):
+    return await strategy_service.generate_strategy(data)
 
 if __name__ == "__main__":
     import uvicorn

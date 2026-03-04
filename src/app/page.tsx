@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import IntakeForm from '@/components/IntakeForm';
+import OnboardingWizard from '@/components/Wizard/OnboardingWizard';
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -163,12 +163,12 @@ const STAGGER_CHILDREN_VARIANTS = {
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isIntakeOpen, setIsIntakeOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-brand-light text-brand-dark overflow-hidden selection:bg-brand-cyan/30 relative">
       <ParticleBackground />
-      <IntakeForm isOpen={isIntakeOpen} onClose={() => setIsIntakeOpen(false)} />
+      <OnboardingWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} />
 
       {/* Navigation */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-brand-border">
@@ -194,7 +194,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-4">
             <div className="hidden md:block">
               <button
-                onClick={() => setIsIntakeOpen(true)}
+                onClick={() => setIsWizardOpen(true)}
                 className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm"
               >
                 Get Started
@@ -243,7 +243,7 @@ export default function LandingPage() {
                   FAQ
                 </Link>
                 <button
-                  onClick={() => setIsIntakeOpen(true)}
+                  onClick={() => setIsWizardOpen(true)}
                   className="w-full py-4 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm"
                 >
                   Get Started
@@ -487,6 +487,10 @@ export default function LandingPage() {
               <span className="font-bold tracking-tight text-brand-dark">AI Vanguard</span>
             </div>
             <p className="text-sm text-slate-500 font-medium text-center md:text-left">© {new Date().getFullYear()} AI Vanguard.<br className="sm:hidden" /> All rights reserved.</p>
+            <div className="flex gap-4 mt-2">
+              <Link href="/privacy" className="text-xs text-slate-400 hover:text-brand-blue transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="text-xs text-slate-400 hover:text-brand-blue transition-colors">Terms of Service</Link>
+            </div>
           </div>
           <div className="flex items-center gap-6">
             <Link href="#" className="text-slate-500 hover:text-brand-blue transition-colors">
