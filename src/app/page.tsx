@@ -401,7 +401,7 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
+                <button onClick={() => openWizard('landing_page')} className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
                   Get Started
                 </button>
               </motion.div>
@@ -472,7 +472,7 @@ export default function LandingPage() {
                     </li>
                   ))}
                 </ul>
-                <button className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
+                <button onClick={() => openWizard('chatbot')} className="w-full py-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-brand-dark font-semibold transition-colors">
                   Get Started
                 </button>
               </motion.div>
