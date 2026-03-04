@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     X,
@@ -19,14 +19,8 @@ import {
 interface OnboardingWizardProps {
     isOpen: boolean;
     onClose: () => void;
+    initialGoal?: string;
 }
-
-const steps = [
-    { id: 'welcome', title: 'Welcome', icon: Rocket },
-    { id: 'business', title: 'Business', icon: Building2 },
-    { id: 'goal', title: 'Strategy', icon: Target },
-    { id: 'email', title: 'Quote', icon: Mail },
-];
 
 const INDUSTRIES = ['Plumbing', 'Electrical', 'Landscaping', 'HVAC', 'Home Services', 'Construction', 'Other'];
 const GOALS = [
@@ -35,18 +29,43 @@ const GOALS = [
     { id: 'full_onboarding', title: 'Full AI Onboarding', desc: 'Combined Chatbot and Landing Page setup for maximum growth.' },
 ];
 
-export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardProps) {
+export default function OnboardingWizard({ isOpen, onClose, initialGoal }: OnboardingWizardProps) {
     const [currentStep, setCurrentStep] = useState(0);
     const [loading, setLoading] = useState(false);
     const [strategy, setStrategy] = useState<any>(null);
     const [formData, setFormData] = useState({
         business_name: '',
         industry: 'Plumbing',
-        primary_ai_goal: 'chatbot',
+        primary_ai_goal: initialGoal || 'chatbot',
         email: '',
     });
 
-    const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    const activeSteps = useMemo(() => {
+        const baseSteps = [
+            { id: 'welcome', title: 'Welcome', icon: Rocket },
+            { id: 'business', title: 'Business', icon: Building2 },
+            { id: 'goal', title: 'Strategy', icon: Target },
+            { id: 'email', title: 'Quote', icon: Mail },
+        ];
+        if (initialGoal) {
+            return baseSteps.filter(s => s.id !== 'goal');
+        }
+        return baseSteps;
+    }, [initialGoal]);
+
+    useEffect(() => {
+        if (isOpen) {
+            setFormData(prev => ({
+                ...prev,
+                primary_ai_goal: initialGoal || 'chatbot'
+            }));
+            setCurrentStep(0);
+            setStrategy(null);
+            setLoading(false);
+        }
+    }, [isOpen, initialGoal]);
+
+    const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, activeSteps.length));
     const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
     const handleSubmit = async () => {
@@ -60,7 +79,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
             if (response.ok) {
                 const data = await response.json();
                 setStrategy(data);
-                setCurrentStep(steps.length); // Final "Thank You" step
+                setCurrentStep(activeSteps.length); // Final "Thank You" step
             }
         } catch (error) {
             console.error('Error generating quote:', error);
@@ -69,7 +88,8 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
         }
     };
 
-    const progress = (currentStep / (steps.length - 1)) * 100;
+    const progress = (currentStep / activeSteps.length) * 100;
+    const currentStepId = currentStep < activeSteps.length ? activeSteps[currentStep].id : 'thankyou';
 
     return (
         <AnimatePresence>
@@ -92,7 +112,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                 </div>
 
                                 <div className="space-y-6">
-                                    {steps.map((step, idx) => {
+                                    {activeSteps.map((step, idx) => {
                                         const Icon = step.icon;
                                         const isActive = idx === currentStep;
                                         const isCompleted = idx < currentStep;
@@ -105,7 +125,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                                 </div>
                                                 <span className={`text-sm font-semibold transition-colors ${isActive ? 'text-brand-dark' : 'text-slate-400'
                                                     }`}>{step.title}</span>
-                                                {idx < steps.length - 1 && (
+                                                {idx < activeSteps.length - 1 && (
                                                     <div className="absolute top-10 left-5 w-px h-6 bg-slate-100" />
                                                 )}
                                             </div>
@@ -133,7 +153,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
 
                             <div className="flex-1">
                                 <AnimatePresence mode="wait">
-                                    {currentStep === 0 && (
+                                    {currentStepId === 'welcome' && (
                                         <motion.div
                                             key="step0"
                                             initial={{ opacity: 0, x: 20 }}
@@ -153,7 +173,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         </motion.div>
                                     )}
 
-                                    {currentStep === 1 && (
+                                    {currentStepId === 'business' && (
                                         <motion.div
                                             key="step1"
                                             initial={{ opacity: 0, x: 20 }}
@@ -186,7 +206,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         </motion.div>
                                     )}
 
-                                    {currentStep === 2 && (
+                                    {currentStepId === 'goal' && (
                                         <motion.div
                                             key="step2"
                                             initial={{ opacity: 0, x: 20 }}
@@ -213,7 +233,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         </motion.div>
                                     )}
 
-                                    {currentStep === 3 && (
+                                    {currentStepId === 'email' && (
                                         <motion.div
                                             key="step4"
                                             initial={{ opacity: 0, x: 20 }}
@@ -236,7 +256,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         </motion.div>
                                     )}
 
-                                    {currentStep === 4 && strategy && (
+                                    {currentStepId === 'thankyou' && strategy && (
                                         <motion.div
                                             key="thankyou"
                                             initial={{ opacity: 0, scale: 0.9 }}
@@ -282,7 +302,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                 </AnimatePresence>
                             </div>
 
-                            {currentStep < 4 && (
+                            {currentStep < activeSteps.length && (
                                 <div className="pt-12 flex items-center justify-between">
                                     <button
                                         onClick={prevStep}
@@ -292,7 +312,7 @@ export default function OnboardingWizard({ isOpen, onClose }: OnboardingWizardPr
                                         <ChevronLeft className="w-8 h-8" />
                                     </button>
 
-                                    {currentStep === (steps.length - 1) ? (
+                                    {currentStep === (activeSteps.length - 1) ? (
                                         <button
                                             onClick={handleSubmit}
                                             disabled={loading || !formData.business_name || !formData.email.includes('@')}

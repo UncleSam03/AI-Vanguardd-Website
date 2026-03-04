@@ -164,11 +164,17 @@ const STAGGER_CHILDREN_VARIANTS = {
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [wizardGoal, setWizardGoal] = useState<string | undefined>();
+
+  const openWizard = (goal?: string) => {
+    setWizardGoal(goal);
+    setIsWizardOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-brand-light text-brand-dark overflow-hidden selection:bg-brand-cyan/30 relative">
       <ParticleBackground />
-      <OnboardingWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} />
+      <OnboardingWizard isOpen={isWizardOpen} onClose={() => setIsWizardOpen(false)} initialGoal={wizardGoal} />
 
       {/* Navigation */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-brand-border">
@@ -194,7 +200,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-4">
             <div className="hidden md:block">
               <button
-                onClick={() => setIsWizardOpen(true)}
+                onClick={() => openWizard('general')}
                 className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm"
               >
                 Get Started
@@ -243,7 +249,7 @@ export default function LandingPage() {
                   FAQ
                 </Link>
                 <button
-                  onClick={() => setIsWizardOpen(true)}
+                  onClick={() => openWizard()}
                   className="w-full py-4 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm"
                 >
                   Get Started
@@ -440,7 +446,7 @@ export default function LandingPage() {
                         </li>
                       ))}
                     </ul>
-                    <button className="w-full py-3 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm">
+                    <button onClick={() => openWizard('full_onboarding')} className="w-full py-3 rounded-xl bg-brand-dark text-white font-semibold hover:bg-slate-800 transition-colors shadow-sm">
                       Get the Bundle
                     </button>
                   </div>
