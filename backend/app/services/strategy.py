@@ -23,15 +23,15 @@ class StrategyService:
         - Contact Email: {data.email}
 
         Your quotation should use our exact subscription pricing model based on the goal:
-        - Chatbots are exactly $50 /mo.
-        - Landing Pages are exactly $100 /mo (+ domain fee).
-        - Full Onboarding (Both) is $150 /mo (+ domain fee).
+        - Chatbots are exactly $49.99 /mo.
+        - Landing Pages are exactly $99.99 one-time (+ domain fee).
+        - Full Onboarding (Both) is $99.99 setup + $49.99 /mo (+ domain fee).
         Adjust the terminology appropriately for their industry ({data.industry}).
 
         Return a JSON object matching this schema exactly:
         {{
             "summary_text": "A brief 2-sentence welcoming pitch explaining the ROI of this project for their specific trade.",
-            "estimated_cost": "The exact monthly subscription cost from the pricing model above, including the '+ domain fee' note if applicable.",
+            "estimated_cost": "The exact cost from the pricing model above, including the '+ domain fee' note if applicable.",
             "estimated_timeline": "A rough setup timeline, e.g., '3-5 Days' or '1 Week'",
             "services_included": ["Bullet 1", "Bullet 2", "Bullet 3", "Bullet 4"]
         }}
