@@ -200,7 +200,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-4">
             <div className="hidden md:block">
               <button
-                onClick={() => openWizard('general')}
+                onClick={() => openWizard()}
                 className="px-4 py-2 rounded-lg bg-brand-dark text-white text-sm font-semibold hover:bg-slate-800 transition-colors shadow-sm"
               >
                 Get Started
