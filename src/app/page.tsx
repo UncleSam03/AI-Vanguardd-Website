@@ -383,9 +383,9 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-brand-dark">Landing Page</h3>
                 <p className="text-slate-500 text-sm mb-6">High-converting, mobile-optimized site.</p>
-                <div className="mb-8">
+                <div className="mb-8 flex items-baseline gap-2">
                   <span className="text-4xl font-bold text-brand-dark">$100</span>
-                  <span className="text-slate-400 font-medium">/mo</span>
+                  <span className="text-slate-400 font-medium">/mo <span className="text-xs text-slate-400 opacity-75">+ domain fee</span></span>
                 </div>
                 <ul className="space-y-4 mb-8 flex-1">
                   {['Custom Domain', 'SEO Optimization', 'Lead Capture Forms', 'Fast Hosting'].map((feature, i) => (
@@ -425,9 +425,9 @@ export default function LandingPage() {
                     </div>
                     <h3 className="text-xl font-semibold mb-2 text-brand-dark">Vanguard Bundle</h3>
                     <p className="text-slate-500 text-sm mb-6">The complete digital presence package.</p>
-                    <div className="mb-8">
+                    <div className="mb-8 flex items-baseline gap-2">
                       <span className="text-4xl font-bold text-brand-dark">$150</span>
-                      <span className="text-slate-400 font-medium">/mo</span>
+                      <span className="text-slate-400 font-medium">/mo <span className="text-xs text-slate-400 opacity-75">+ domain fee</span></span>
                     </div>
                     <ul className="space-y-4 mb-8 flex-1">
                       {['Everything in Landing Page', 'Everything in AI Chatbot', 'Priority Support', 'Monthly Performance Report'].map((feature, i) => (
