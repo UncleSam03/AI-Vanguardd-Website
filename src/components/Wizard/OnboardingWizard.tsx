@@ -94,7 +94,7 @@ export default function OnboardingWizard({ isOpen, onClose, initialGoal }: Onboa
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-brand-dark/30 backdrop-blur-sm">
+                <div className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-6 bg-brand-dark/30 backdrop-blur-sm">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 30 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -145,7 +145,11 @@ export default function OnboardingWizard({ isOpen, onClose, initialGoal }: Onboa
 
                         {/* Main Content */}
                         <div className="flex-1 p-8 md:p-12 flex flex-col overflow-y-auto">
-                            <div className="flex justify-end mb-4">
+                            <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
+                                <button onClick={onClose} className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-brand-dark transition-colors">
+                                    <ChevronLeft className="w-5 h-5" />
+                                    Back to Main Page
+                                </button>
                                 <button onClick={onClose} className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400">
                                     <X className="w-6 h-6" />
                                 </button>

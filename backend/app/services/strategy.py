@@ -4,6 +4,7 @@ import os
 import json
 
 from app.schemas import WizardData, QuotationSummary
+from app.services.email import EmailService
 
 class StrategyService:
     def __init__(self):
@@ -45,12 +46,8 @@ class StrategyService:
         
         result_dict = json.loads(response_text)
         
-        # --- SIMULATE AUTOMATED EMAIL SENDING ---
-        print("\n" + "="*50)
-        print(f"📧 [SIMULATED NOTIFICATION] AUTOMATED QUOTE SENT")
-        print(f"To: {data.email}")
-        print(f"Subject: Your AI Project Quotation - AI Vanguard")
-        print(f"Cost: {result_dict.get('estimated_cost')}")
-        print("="*50 + "\n")
+        # --- SEND AUTOMATED EMAIL ---
+        email_svc = EmailService()
+        email_svc.send_quotation(data.email, result_dict, data.business_name)
         
         return QuotationSummary(**result_dict)
